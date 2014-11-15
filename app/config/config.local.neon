@@ -1,0 +1,24 @@
+parameters:
+
+
+extensions:
+    console: Kdyby\Console\DI\ConsoleExtension
+    events: Kdyby\Events\DI\EventsExtension
+    annotations: Kdyby\Annotations\DI\AnnotationsExtension
+    doctrine: Kdyby\Doctrine\DI\OrmExtension
+
+doctrine:
+    user: root
+    password:
+    dbname: managd
+    metadataCache: default
+    metadata:
+        App: %appDir%
+
+
+services:
+    # services
+    - App\Model\Services\AuthenticationService
+
+    # repositories
+    - App\Model\Repositories\UserRepository

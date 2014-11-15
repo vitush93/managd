@@ -1,0 +1,41 @@
+#login {
+  margin-top: 120px;
+  .panel-heading {
+    font-weight: 800;
+    color: @white - 120;
+  }
+  fieldset {
+    margin-bottom: 40px;
+    legend {
+      margin-bottom: 15px;
+    }
+  }
+  .avatar-pick {
+    width: 32%;
+    cursor: pointer;
+    opacity: 0.6;
+    &.selected {
+      opacity: 1;
+    }
+  }
+  .or {
+    position: relative;
+    height: 20px;
+    border-bottom: 1px solid @white - 50;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    span {
+      display: block;
+      height: 20px;
+      line-height: 20px;
+      width: 30px;
+      text-align: center;
+      left: 50%;
+      margin-left: -15px;
+      text-transform: uppercase;
+      background: #fff;
+      position: absolute;
+      top: 9px;
+    }
+  }
+}

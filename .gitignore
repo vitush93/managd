@@ -1,0 +1,15 @@
+log/*
+temp/*
+vendor/*
+!vendor/others
+.idea/
+nbproject/
+www/bower_components/*
+www/node_modules/*
+
+.DS_Store
+!.gitignore
+!.htaccess
+!web.config
+
+composer.lock

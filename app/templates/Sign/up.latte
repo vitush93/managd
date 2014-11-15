@@ -1,0 +1,68 @@
+{block |minifyhtml}
+{include '../partials/head.latte'}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            {include '../partials/navbar.latte'}
+        </div>
+
+        <div class="col-md-4 col-sm-2 col-xs-12"></div>
+        <div class="col-md-4 col-sm-8 col-xs-12" id="login">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Create a new account
+                </div>
+                <div class="panel-body">
+
+                    {form registerForm}
+
+                        <ul class=error n:if="$form->ownErrors">
+                            <li n:foreach="$form->ownErrors as $error">{$error}</li>
+                        </ul>
+
+                        <fieldset>
+                            <legend>login credentials</legend>
+                            <div class="form-group">
+                                {label username /}
+                                {input username}
+                            </div>
+                            <div class="form-group">
+                                {label password /}
+                                {input password}
+                            </div>
+                            <div>
+                                {label password2 /}
+                                {input password2}
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>personal info</legend>
+                            <div class="form-group">
+                                {label fullname /}
+                                {input fullname}
+                            </div>
+                            <div class="form-group">
+                                <label>Choose your avatar</label><br>
+                                <img src="{$basePath}/images/avatars/bob.png" alt="" title="" class="avatar-pick selected" data-avatar="bob">
+                                <img src="{$basePath}/images/avatars/jarry.png" alt="" title="" class="avatar-pick" data-avatar="jarry">
+                                <img src="{$basePath}/images/avatars/jonathan.png" alt="" title="" class="avatar-pick" data-avatar="jonathan">
+                                <img src="{$basePath}/images/avatars/mike.png" alt="" title="" class="avatar-pick" data-avatar="mike">
+                                <img src="{$basePath}/images/avatars/suzanne.png" alt="" title="" class="avatar-pick" data-avatar="suzanne">
+                                <img src="{$basePath}/images/avatars/tom.png" alt="" title="" class="avatar-pick" data-avatar="tom">
+                                {input avatar}
+                            </div>
+                        </fieldset>
+                        {input process}
+
+                    {/form}
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-2 col-xs-12"></div>
+    </div>
+</div>
+
+{include '../partials/foot.latte'}
+{/block}
