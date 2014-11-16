@@ -2,11 +2,11 @@
 
 namespace App\Model\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby\Doctrine\Entities\BaseEntity;
 use Nette\InvalidArgumentException;
 use Nette\Security\Passwords;
-use Nette\Utils\Strings;
 
 /**
  * @ORM\Entity
@@ -22,6 +22,12 @@ class User extends BaseEntity
         'suzanne',
         'tom'
     );
+
+    /**
+     * @ORM\OneToMany(targetEntity="PasswordRecovery", mappedBy="user", cascade={"persist", "remove"})
+     * @var ArrayCollection
+     */
+    private $passwordRecovery;
 
     /**
      * @ORM\Id
@@ -64,6 +70,7 @@ class User extends BaseEntity
     public function __construct()
     {
         $this->registered = new \DateTime();
+        $this->passwordRecovery = new ArrayCollection();
     }
 
     /**
@@ -99,19 +106,19 @@ class User extends BaseEntity
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getRegistered()
-    {
-        return $this->registered;
-    }
-
-    /**
      * @param string $password
      */
     public function setPassword($password)
     {
         $this->password = Passwords::hash($password);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getRegistered()
+    {
+        return $this->registered;
     }
 
     /**

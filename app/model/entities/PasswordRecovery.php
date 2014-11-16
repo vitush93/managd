@@ -20,7 +20,7 @@ class PasswordRecovery extends BaseEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="passwordRecovery")
      * @var User
      */
     private $user;
