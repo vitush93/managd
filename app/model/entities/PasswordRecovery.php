@@ -4,12 +4,12 @@ namespace App\Model\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby\Doctrine\Entities\BaseEntity;
-use App\Model\Entities\User;
 
 /**
  * @ORM\Entity
  */
-class PasswordRecovery extends BaseEntity {
+class PasswordRecovery extends BaseEntity
+{
 
     /**
      * @ORM\Id
@@ -31,39 +31,55 @@ class PasswordRecovery extends BaseEntity {
      */
     private $token;
 
-    public function __construct() {
+    /**
+     * @ORM\Column(type="boolean")
+     * @var boolean
+     */
+    private $active;
+
+    public function __construct()
+    {
         $this->token = uniqid(true);
+        $this->active = TRUE;
     }
-    
+
     /**
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * 
+     *
      * @return User
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 
-    /**
-     * 
-     * @return string
-     */
-    public function getToken() {
-        return $this->token;
-    }
-
-    public function setUser(User $user) {
+    public function setUser(User $user)
+    {
         $this->user = $user;
     }
 
-    private function setToken($token) {
-        $this->token = $token;
+    /**
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Marks the password recovery item as inactive
+     */
+    public function disable()
+    {
+        $this->active = FALSE;
     }
 
 

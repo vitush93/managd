@@ -45,7 +45,7 @@ body {
   display: block;
   height: 64px;
   line-height: 64px;
-  color: #b2dbfb;
+    color: #c6efff;
   text-align: center;
   padding-left: 15px;
   padding-right: 15px;
@@ -142,6 +142,11 @@ body {
   line-height: 60px;
   color: #ecf0f1;
   transition: 0.1s ease-in-out;
+}
+
+.task-list .task aside,
+.task-list .task main {
+    display: inline;
 }
 .task-list .task .task-info {
   display: block;
