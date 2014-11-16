@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Model\Entities\User;
 use Minify_HTML;
 use Nette;
 use Nette\Application\UI\Form;
@@ -12,15 +13,12 @@ use Nette\Security\AuthenticationException;
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
-
-    protected function createTemplate($class = NULL)
+    /**
+     * @return User
+     */
+    public function user()
     {
-        $template = parent::createTemplate($class);
-        $template->registerHelper('minifyhtml', function ($in) {
-            return Minify_HTML::minify($in);
-        });
-
-        return $template;
+        return $this->user->identity->data[0];
     }
 
     public function loginFormSucceeded(Form $form, $values)
@@ -31,6 +29,16 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         } catch (AuthenticationException $e) {
             $this->flashMessage($e->getMessage(), 'danger');
         }
+    }
+
+    protected function createTemplate($class = NULL)
+    {
+        $template = parent::createTemplate($class);
+        $template->registerHelper('minifyhtml', function ($in) {
+            return Minify_HTML::minify($in);
+        });
+
+        return $template;
     }
 
     protected function createComponentNavbarLoginForm()

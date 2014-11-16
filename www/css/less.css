@@ -143,7 +143,6 @@ body {
   color: #ecf0f1;
   transition: 0.1s ease-in-out;
 }
-
 .task-list .task aside,
 .task-list .task main {
     display: inline;
@@ -488,6 +487,14 @@ body {
 }
 #landing-flashes {
   margin-top: 100px;
+}
+
+.content-notify {
+    text-align: center;
+    font-size: 18px;
+    color: #7f90a0;
+    font-weight: bold;
+    margin-top: 20px;
 }
 .navbar .form-group {
   margin-right: 5px;

@@ -1,63 +1,69 @@
 {block upcoming_tasks}
-    <div class="task">
-        <aside class="task-icon">
-            <span class="strip blue"></span>
-                                <span class="task-icon project-icon blue">
-                                    <i class="fa fa-shopping-cart"></i>
+    {foreach $upcoming as $t}
+        <div class="task">
+            <aside class="task-icon">
+                <span class="strip {$t->color}"></span>
+                                <span class="task-icon project-icon {$t->project->color}">
+                                    <i class="fa fa-{$t->project->icon}"></i>
                                 </span>
-        </aside>
-        <main class="task-desc">
-            trololo
-            <span class="label label-success"><i class="fa fa-clock-o"></i> 3 days</span>
-        </main>
-        <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
-    </div>
+            </aside>
+            <main class="task-desc">
+                {$t->title}
+                <span class="label label-success"><i class="fa fa-clock-o"></i> {$remaining($t->due)}</span>
+            </main>
+            <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
+        </div>
+    {/foreach}
 {/block}
 
 {block tasks}
-    <div class="task">
-        <aside class="task-icon">
-            <span class="strip blue"></span>
-                                    <span class="task-icon project-icon green">
-                                        <i class="fa fa-user"></i>
-                                    </span>
-        </aside>
-        <main class="task-desc">
-            task dat has not been yet completed
-            <span class="label label-default"><i class="fa fa-clock-o"></i> due</span>
-        </main>
-        <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
-    </div>
+
+    {foreach $tasks as $t}
+        <div class="task">
+            <aside class="task-icon">
+                <span class="strip {$t->color}"></span>
+                                <span class="task-icon project-icon {$t->project->color}">
+                                    <i class="fa fa-{$t->project->icon}"></i>
+                                </span>
+            </aside>
+            <main class="task-desc">
+                {$t->title}
+                <span class="label label-success"><i class="fa fa-clock-o"></i> {$remaining($t->due)}</span>
+            </main>
+            <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
+        </div>
+    {/foreach}
+
 {/block}
-
-
 
 {block content}
     <div class="container" id="main">
         <div class="row">
-            {include 'menu.latte'}
+
+            {includeblock 'menu.latte'}
+
             <div class="col-sm-8 col-md-9" id="content">
                 <div class="row">
                     <div class="col-xs-12">
+                        {if count($tasks) == 0 && count($upcoming) == 0}
+                            <p class="content-notify">Yay, you have no tasks to complete!</p>
+                        {else}
 
-                        <div class="heading">
-                            <h5>Upcoming / Due</h5>
-                        </div>
-
-                        <div class="task-list">
-
-                            {include upcoming_tasks}
-
-                        </div>
-
-                        <div class="heading">
-                            <h5>My Tasks</h5>
-                        </div>
-                        <div class="task-list">
-
-                            {include tasks}
-
-                        </div>
+                            {if count($upcoming) > 0}
+                                <div class="heading">
+                                    <h5>Upcoming / Due</h5>
+                                </div>
+                                <div class="task-list">
+                                    {include upcoming_tasks}
+                                </div>
+                            {/if}
+                            <div class="heading">
+                                <h5>My Tasks</h5>
+                            </div>
+                            <div class="task-list">
+                                {include tasks}
+                            </div>
+                        {/if}
                     </div>
                 </div>
             </div>

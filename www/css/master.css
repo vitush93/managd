@@ -9577,6 +9577,14 @@ body {
     margin-top: 100px
 }
 
+.content-notify {
+    text-align: center;
+    font-size: 18px;
+    color: #7f90a0;
+    font-weight: 700;
+    margin-top: 20px
+}
+
 .navbar .form-group {
     margin-right: 5px
 }

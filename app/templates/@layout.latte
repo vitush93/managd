@@ -61,5 +61,10 @@
 {block scripts}
     <script src="{$basePath}/js/master.js"></script>
 {/block}
+
+{ifset #footer}
+    {include footer}
+{/ifset}
+
 </body>
 </html>

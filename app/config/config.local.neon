@@ -22,3 +22,4 @@ services:
 
     # repositories
     - App\Model\Repositories\UserRepository
+    - App\Model\Repositories\TaskRepository
