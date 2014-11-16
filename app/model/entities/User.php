@@ -24,11 +24,20 @@ class User extends BaseEntity
     );
 
     /**
+     * @ORM\OneToMany(targetEntity="task", mappedBy="assignee")
+     * @var ArrayCollection
+     */
+    private $tasks;
+    /**
+     * @ORM\ManyToMany(targetEntity="Project", mappedBy="users")
+     * @var ArrayCollection
+     */
+    private $projects;
+    /**
      * @ORM\OneToMany(targetEntity="PasswordRecovery", mappedBy="user", cascade={"persist", "remove"})
      * @var ArrayCollection
      */
     private $passwordRecovery;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -36,31 +45,26 @@ class User extends BaseEntity
      * @var integer
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", unique=true)
      * @var string
      */
     private $username;
-
     /**
      * @ORM\Column(type="string")
      * @var string
      */
     private $password;
-
     /**
      * @ORM\Column(type="datetime")
      * @var \DateTime
      */
     private $registered;
-
     /**
      * @ORM\Column(type="string")
      * @var string
      */
     private $fullname;
-
     /**
      * @ORM\Column(type="string")
      * @var string
@@ -71,6 +75,24 @@ class User extends BaseEntity
     {
         $this->registered = new \DateTime();
         $this->passwordRecovery = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
+    }
+
+    /**
+     * @param Task $task
+     */
+    public function addTask(Task $task)
+    {
+        $this->tasks->add($task);
+    }
+
+    /**
+     * @param Project $project
+     */
+    public function addProject(Project $project)
+    {
+        $project->addUser($this);
+        $this->projects->add($project);
     }
 
     /**
@@ -154,6 +176,30 @@ class User extends BaseEntity
             throw new InvalidArgumentException;
         }
         $this->avatar = $avatar;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPasswordRecovery()
+    {
+        return $this->passwordRecovery;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 
 }

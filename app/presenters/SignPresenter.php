@@ -161,7 +161,8 @@ class SignPresenter extends BasePresenter
             ->setRequired()
             ->addRule(Form::EQUAL, 'Password mismatch.', $form['password'])
             ->setOmitted();
-        $form->addText('fullname', 'Your full name');
+        $form->addText('fullname', 'Your full name')
+            ->setRequired();
         $form->addHidden('avatar', 'bob')
             ->setRequired();
         $form->addSubmit('process', 'create account');
