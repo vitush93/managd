@@ -20,14 +20,28 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     /** @var EntityManager @inject */
     public $em;
 
+    public function startup()
+    {
+        parent::startup();
+
+        if (!$this->user->isAllowed($this->presenter->name)) {
+            $this->redirect('Sign:in');
+        }
+    }
+
     /**
      * @return User
      */
     public function user()
     {
+        if (!$this->user->isLoggedIn()) {
+            return null;
+        }
+
         if ($this->doctrineUser == null) {
             $this->doctrineUser = $this->em->find(User::getClassName(), $this->user->id);
         }
+
         return $this->doctrineUser;
     }
 

@@ -22,5 +22,16 @@ nette:
 
 
 services:
+    authorizator:
+        class: Nette\Security\Permission
+        setup:
+            - addRole('guest')
+            - addRole('user')
+            - addResource('Dashboard')
+            - addResource('Homepage')
+            - addResource('Sign')
+            - allow('user')
+            - allow('guest', 'Homepage')
+            - allow('guest', 'Sign')
     - App\RouterFactory
     router: @App\RouterFactory::createRouter
