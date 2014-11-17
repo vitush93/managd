@@ -12,12 +12,6 @@ class DashboardPresenter extends BasePresenter
     /** @var TaskRepository @inject */
     public $taskRepository;
 
-    public function renderDefault()
-    {
-        $this->template->upcoming = $this->taskRepository->findUpcomingByUser($this->user());
-        $this->template->tasks = $this->taskRepository->findByUser($this->user());
-    }
-
     /**
      * Process form and add a new project to the database.
      *

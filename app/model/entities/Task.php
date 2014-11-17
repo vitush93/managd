@@ -243,8 +243,59 @@ class Task extends BaseEntity
      */
     public function isDue()
     {
+        return ($this->_getDueOffset() <= 0);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUpcoming()
+    {
+        return ($this->_getDueOffset() <= 2);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabelStyle()
+    {
+        $due = $this->_getDueOffset();
+
+        if ($due < 0) {
+            return 'default';
+        }
+
+        if ($due == 0) {
+            return 'danger';
+        }
+
+        if ($due == 1) {
+            return 'warning';
+        }
+
+        if ($due > 1) {
+            return 'success';
+        }
+
+        return 'default';
+    }
+
+    /**
+     * @return int
+     */
+    private function _getDueOffset()
+    {
+        if (!$this->due) {
+            return 0;
+        }
+
         $now = new \DateTime();
-        return ((int)$now->diff($this->due)->format('%a') <= 0);
+
+        if ($now > $this->due) {
+            return -1;
+        }
+
+        return (int)$now->diff($this->due)->format('%a');
     }
 
     /**
@@ -254,17 +305,21 @@ class Task extends BaseEntity
      */
     public function getDueOffset()
     {
-        $ret = '';
-        $now = new \DateTime();
+        $due = $this->_getDueOffset();
 
-        $diff = $now->diff($this->due);
-        if ((int)$diff->format('%a') <= 0) {
-            $ret = 'due';
-        } else {
-            $ret = $diff->format('%a day(s)');
+        if ($due < 0) {
+            return 'due';
         }
 
-        return $ret;
+        if ($due == 0) {
+            return 'today';
+        }
+
+        if ($due == 1) {
+            return 'tomorrow';
+        }
+
+        return $due . " days";
     }
 
 }
