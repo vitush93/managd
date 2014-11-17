@@ -76,7 +76,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
         $form->getElementPrototype()->class('navbar-form navbar-right');
         $form->addText('username', '')
-            ->setAttribute('autocomplete', 'off')
             ->setAttribute('placeholder', 'Username');
         $form->addPassword('password')
             ->setAttribute('placeholder', 'Password');
