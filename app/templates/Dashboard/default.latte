@@ -9,7 +9,7 @@
             </aside>
             <main class="task-desc">
                 {$t->title}
-                <span class="label label-success"><i class="fa fa-clock-o"></i> {$remaining($t->due)}</span>
+                <span class="label label-success"><i class="fa fa-clock-o"></i> {$t->getDueOffset()}</span>
             </main>
             <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
         </div>
@@ -28,7 +28,7 @@
             </aside>
             <main class="task-desc">
                 {$t->title}
-                <span class="label label-success"><i class="fa fa-clock-o"></i> {$remaining($t->due)}</span>
+                <span class="label label-success"><i class="fa fa-clock-o"></i> {$t->getDueOffset()}</span>
             </main>
             <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
         </div>

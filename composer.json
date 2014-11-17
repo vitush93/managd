@@ -20,7 +20,8 @@
 		"dg/adminer-custom": "~1.5",
 		"kdyby/doctrine": "~2.1",
 		"mrclay/minify": "dev-master",
-		"ezyang/htmlpurifier": "dev-master"
+		"ezyang/htmlpurifier": "dev-master",
+		"phpunit/phpunit": "4.3.5"
 	},
 	"require-dev": {
 		"nette/tester": "~1.0"

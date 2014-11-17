@@ -236,5 +236,35 @@ class Task extends BaseEntity
         $this->title = $title;
     }
 
+    /**
+     * Is the task due?
+     *
+     * @return bool
+     */
+    public function isDue()
+    {
+        $now = new \DateTime();
+        return ((int)$now->diff($this->due)->format('%a') <= 0);
+    }
+
+    /**
+     * How many days are remaining?
+     *
+     * @return string
+     */
+    public function getDueOffset()
+    {
+        $ret = '';
+        $now = new \DateTime();
+
+        $diff = $now->diff($this->due);
+        if ((int)$diff->format('%a') <= 0) {
+            $ret = 'due';
+        } else {
+            $ret = $diff->format('%a day(s)');
+        }
+
+        return $ret;
+    }
 
 }

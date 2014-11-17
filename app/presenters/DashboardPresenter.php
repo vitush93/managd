@@ -14,10 +14,6 @@ class DashboardPresenter extends BasePresenter
     {
         $this->template->upcoming = $this->taskRepository->findUpcomingByUser($this->user());
         $this->template->tasks = $this->taskRepository->findByUser($this->user());
-        $this->template->remaining = function (\DateTime $dateTime) {
-            $now = new \DateTime();
-            return $now->diff($dateTime)->format('%a day(s)');
-        };
     }
 
 }
