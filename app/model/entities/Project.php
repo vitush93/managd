@@ -12,6 +12,19 @@ use Kdyby\Doctrine\Entities\BaseEntity;
  */
 class Project extends BaseEntity
 {
+    public static $COLORS = array(
+        'orange', 'red', 'yellow', 'blue', 'white', 'purple', 'turq'
+    );
+
+    public static $ICONS = array(
+        'fa-angellist', 'fa-plug', 'fa-beer', 'fa-bolt', 'fa-globe', 'fa-graduation-cap', 'fa-bomb', 'fa-life-ring', 'fa-institution'
+    );
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @var User
+     */
+    private $owner;
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="project")
      * @var ArrayCollection
@@ -49,6 +62,8 @@ class Project extends BaseEntity
     {
         $this->users = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->icon = self::$ICONS[rand(0, count(self::$ICONS) - 1)];
+        $this->color = self::$COLORS[rand(0, count(self::$COLORS) - 1)];
     }
 
     /**
@@ -64,7 +79,6 @@ class Project extends BaseEntity
      */
     public function addUser(User $user)
     {
-        $user->addProject($this);
         $this->users->add($user);
     }
 
@@ -140,5 +154,31 @@ class Project extends BaseEntity
         return $this->users;
     }
 
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     */
+    public function setOwner(User $owner)
+    {
+        $owner->addProject($this);
+        $this->addUser($owner);
+        $this->owner = $owner;
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function isOwner(User $user)
+    {
+        return ($this->owner == $user);
+    }
 
 }

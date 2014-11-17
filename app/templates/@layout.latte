@@ -20,11 +20,11 @@
 
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
     <div class="container">
-        <a href="{link Dashboard:default}" class="navbar-brand"><img src="{$basePath}/images/avatars/{$user->identity->data[0]->avatar}.png" alt="" title="" class="img-circle" id="avatar">
-            <span class="hidden-xs">{$user->identity->data[0]->fullname}</span></a>
+        <a href="{link Dashboard:default}" class="navbar-brand"><img src="{$basePath}/images/avatars/{$userInfo->avatar}.png" alt="" title="" class="img-circle" id="avatar">
+            <span class="hidden-xs">{$userInfo->fullname}</span></a>
 
         <ul id="nav">
-            <li data-toggle="modal" data-target="#myModal"><a><i class="fa fa-plus-circle"></i></a></li>
+            <li data-toggle="modal" data-target="#newTaskModal"><a><i class="fa fa-plus-circle"></i></a></li>
             <li><a href=""><i class="fa fa-book"></i></a></li>
             <li><a href=""><i class="fa fa-bell"></i> <span class="badge">12</span></a></li>
             <li><a href="{link Sign:out}"><i class="fa fa-sign-out"></i></a></li>
@@ -32,29 +32,11 @@
     </div>
 </div>
 
+{*include '../components/modalForm.latte', form => newTaskForm, id=>'newTaskModal', title=>'Add new task'*}
+
 <div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 
-<!-- MODAL WINDOWS -->
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL WINDOWS -->
 
 {include content}
 

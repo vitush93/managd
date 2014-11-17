@@ -29,15 +29,15 @@ class User extends BaseEntity
      */
     private $tasks;
     /**
-     * @ORM\ManyToMany(targetEntity="Project", mappedBy="users")
-     * @var ArrayCollection
-     */
-    private $projects;
-    /**
      * @ORM\OneToMany(targetEntity="PasswordRecovery", mappedBy="user", cascade={"persist", "remove"})
      * @var ArrayCollection
      */
     private $passwordRecovery;
+    /**
+     * @ORM\ManyToMany(targetEntity="Project", mappedBy="users")
+     * @var ArrayCollection
+     */
+    private $projects;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -76,6 +76,7 @@ class User extends BaseEntity
         $this->registered = new \DateTime();
         $this->passwordRecovery = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     /**
@@ -91,7 +92,6 @@ class User extends BaseEntity
      */
     public function addProject(Project $project)
     {
-        $project->addUser($this);
         $this->projects->add($project);
     }
 
@@ -184,6 +184,14 @@ class User extends BaseEntity
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOwned()
+    {
+        return $this->owned;
     }
 
     /**

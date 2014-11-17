@@ -8,13 +8,13 @@
                     <h5>My Projects</h5>
                 </div>
                 <ul class="menu">
-                    {foreach $user->identity->data[0]->getProjects() as $project}
+                    {foreach $userInfo->getProjects() as $project}
                         <li>
-                            <a href=""><i class="fa fa-user white-o"></i> {$project->name}</a>
+                            <a href=""><i class="fa {$project->icon} {$project->color}-o"></i> {$project->name}</a>
                         </li>
                     {/foreach}
                     <li>
-                        <a href=""><i class="fa fa-plus"></i> Add new project</a>
+                        <a data-toggle="modal" data-target="#newProjectModal"><i class="fa fa-plus"></i> Add new project</a>
                     </li>
                 </ul>
 
@@ -31,6 +31,9 @@
         </div>
     </div>
 </div>
+
+{include '../components/modalForm.latte', form => newProjectForm, id=>'newProjectModal', title=>'Create a new project'}
+
 {/block}
 
 {define footer}

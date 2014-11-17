@@ -45,9 +45,10 @@ body {
   display: block;
   height: 64px;
   line-height: 64px;
-    color: #c6efff;
+  color: #c6efff;
   text-align: center;
   padding-left: 15px;
+  cursor: pointer;
   padding-right: 15px;
 }
 #navbar #nav li a:hover {
@@ -117,6 +118,7 @@ body {
   padding-right: 20px;
   text-align: left;
   height: 45px;
+  cursor: pointer;
   line-height: 45px;
   display: block;
   color: #ecf0f1;
@@ -145,7 +147,7 @@ body {
 }
 .task-list .task aside,
 .task-list .task main {
-    display: inline;
+  display: inline;
 }
 .task-list .task .task-info {
   display: block;
@@ -488,13 +490,12 @@ body {
 #landing-flashes {
   margin-top: 100px;
 }
-
 .content-notify {
-    text-align: center;
-    font-size: 18px;
-    color: #7f90a0;
-    font-weight: bold;
-    margin-top: 20px;
+  text-align: center;
+  font-size: 18px;
+  color: #7f90a0;
+  font-weight: bold;
+  margin-top: 20px;
 }
 .navbar .form-group {
   margin-right: 5px;

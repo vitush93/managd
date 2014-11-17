@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use App\Model\Entities\User;
+use Kdyby\Doctrine\EntityManager;
 use Minify_HTML;
 use Nette;
 use Nette\Application\UI\Form;
@@ -13,12 +14,26 @@ use Nette\Security\AuthenticationException;
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+    /** @var User */
+    private $doctrineUser;
+
+    /** @var EntityManager @inject */
+    public $em;
+
     /**
      * @return User
      */
     public function user()
     {
-        return $this->user->identity->data[0];
+        if ($this->doctrineUser == null) {
+            $this->doctrineUser = $this->em->find(User::getClassName(), $this->user->id);
+        }
+        return $this->doctrineUser;
+    }
+
+    public function beforeRender()
+    {
+        $this->template->userInfo = $this->user();
     }
 
     public function loginFormSucceeded(Form $form, $values)
