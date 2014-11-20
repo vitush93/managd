@@ -105,11 +105,11 @@ class Notification extends BaseEntity
     /**
      * @param User $user
      */
-    public function setUser($user)
+    public function setUser(User $user)
     {
+        $user->addNotification($this);
         $this->user = $user;
     }
 
 
-
-} 
+}

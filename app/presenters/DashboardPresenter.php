@@ -3,15 +3,10 @@
 namespace App\Presenters;
 
 use App\Libs\BootstrapForm;
-use App\Model\Entities\Project;
-use app\model\repositories\TaskRepository;
 use Nette\Application\UI\Form;
 
 class DashboardPresenter extends BasePresenter
 {
-    /** @var TaskRepository @inject */
-    public $taskRepository;
-
     /**
      * Process form and add a new project to the database.
      *
@@ -20,11 +15,7 @@ class DashboardPresenter extends BasePresenter
      */
     public function addProject(Form $form, $values)
     {
-        $project = new Project();
-        $project->setName($values->name);
-        $project->setOwner($this->user());
-
-        $this->em->persist($project);
+        $this->projectRepository->add($this->user(), $values->name);
         $this->em->flush();
 
         $this->flashMessage('You have created a new project!', 'success');

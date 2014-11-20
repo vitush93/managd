@@ -488,7 +488,7 @@ body {
   display: block;
   padding-bottom: 3px;
 }
-#landing-flashes {
+#landing-flashes .alert:first-child {
   margin-top: 100px;
 }
 .content-notify {
@@ -506,6 +506,12 @@ body {
 }
 #invite .panel-body p {
   font-size: 16px;
+}
+#projectModal table tr td {
+  vert-align: middle;
+}
+#projectModal table tr td p {
+  font-size: 15px;
 }
 .navbar .form-group {
   margin-right: 5px;

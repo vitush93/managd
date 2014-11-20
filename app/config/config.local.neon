@@ -23,3 +23,7 @@ services:
     # repositories
     - App\Model\Repositories\UserRepository
     - App\Model\Repositories\TaskRepository
+    - App\Model\Repositories\ProjectRepository
+
+    # logic
+    - App\Model\Notifications

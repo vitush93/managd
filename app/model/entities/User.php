@@ -104,6 +104,14 @@ class User extends BaseEntity
     }
 
     /**
+     * @param Notification $notification
+     */
+    public function addNotification(Notification $notification)
+    {
+        $this->notifications->add($notification);
+    }
+
+    /**
      * @param Project $project
      */
     public function addProject(Project $project)

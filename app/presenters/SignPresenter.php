@@ -7,7 +7,6 @@ use App\Model\Entities\Invite;
 use App\Model\Services\AuthenticationService;
 use Doctrine\ORM\EntityNotFoundException;
 use Kdyby\Doctrine\DuplicateEntryException;
-use Kdyby\Doctrine\EntityManager;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 use Nette\Mail\Message;
@@ -19,10 +18,6 @@ use Nette\Security\AuthenticationException;
  */
 class SignPresenter extends BasePresenter
 {
-
-    /** @var EntityManager @inject */
-    public $em;
-
     /** @var AuthenticationService @inject * */
     public $authenticationService;
 

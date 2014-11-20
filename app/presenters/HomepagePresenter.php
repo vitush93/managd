@@ -4,7 +4,6 @@ namespace App\Presenters;
 
 use App\Model;
 use App\Model\Entities\Invite;
-use Kdyby\Doctrine\EntityManager;
 use Nette;
 
 
@@ -13,10 +12,6 @@ use Nette;
  */
 class HomepagePresenter extends BasePresenter
 {
-
-    /** @var EntityManager @inject */
-    public $em;
-
     /** @var Invite */
     private $invite;
 
@@ -32,10 +27,16 @@ class HomepagePresenter extends BasePresenter
         }
     }
 
+    /**
+     * Process invite by given token.
+     *
+     * @param $id
+     */
     public function actionInvite($id)
     {
         $dao = $this->em->getDao(Model\Entities\Invite::getClassName());
         $this->invite = $dao->findOneBy(['token' => $id, 'valid' => true]);
+
         if (!$this->invite) {
             $this->flashMessage('Sorry, invite token is not valid.', 'warning');
             $this->flashMessage('You can sign up tho.', 'info');

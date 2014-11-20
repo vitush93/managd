@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\model\repositories;
+namespace App\Model\Repositories;
 
 
 use App\Model\Entities\Task;
