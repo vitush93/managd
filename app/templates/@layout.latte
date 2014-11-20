@@ -1,3 +1,4 @@
+{block |minifyhtml}
 {**
  * @param string   $basePath web base path
  * @param array    $flashes  flash messages
@@ -13,7 +14,8 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:900,400italic,700italic,300,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/master.css">
     <link rel="icon" type="image/png" href="{$basePath}/paw.png">
-    {block head}{/block}
+
+    <script src="{$basePath}/js/master.js"></script>
 </head>
 
 <body>
@@ -36,17 +38,8 @@
 
 <div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 
-
-
 {include content}
-
-{block scripts}
-    <script src="{$basePath}/js/master.js"></script>
-{/block}
-
-{ifset #footer}
-    {include footer}
-{/ifset}
 
 </body>
 </html>
+{/block}

@@ -33,6 +33,12 @@ class Project extends BaseEntity
     private $tasks;
 
     /**
+     * @ORM\OneToMany(targetEntity="Invite", mappedBy="project")
+     * @var ArrayCollection
+     */
+    private $invites;
+
+    /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="projects")
      * @var ArrayCollection
      */
@@ -68,6 +74,7 @@ class Project extends BaseEntity
     {
         $this->users = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->invites = new ArrayCollection();
         $this->icon = self::$ICONS[rand(0, count(self::$ICONS) - 1)];
         $this->color = self::$COLORS[rand(0, count(self::$COLORS) - 1)];
     }
@@ -78,6 +85,14 @@ class Project extends BaseEntity
     public function addTask(Task $task)
     {
         $this->tasks->add($task);
+    }
+
+    /**
+     * @param Invite $invite
+     */
+    public function addInvite(Invite $invite)
+    {
+        $this->invites->add($invite);
     }
 
     /**

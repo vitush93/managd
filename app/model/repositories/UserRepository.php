@@ -3,10 +3,9 @@
 namespace App\Model\Repositories;
 
 use App\Model\Entities\User;
+use Kdyby\Doctrine\EntityDao;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Object;
-use Kdyby\Doctrine\EntityDao;
-use Nette\Utils\ArrayHash;
 
 class UserRepository extends Object
 {

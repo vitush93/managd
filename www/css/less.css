@@ -321,13 +321,13 @@ body {
 #overview-chart {
   margin-top: 40px;
 }
-#projects #project-name {
-  font-size: 20px;
+#projects .project-name {
+  font-size: 20px !important;
   height: auto;
   margin-top: 2px;
   font-weight: 300;
 }
-#projects h1#project-name {
+#projects h1.project-name {
   color: #ecf0f1;
   text-align: left;
   box-shadow: inset 0 -1px 0 #435464;
@@ -338,7 +338,7 @@ body {
   padding-top: 20px;
   padding-bottom: 20px;
 }
-#projects #invite {
+#projects .invite {
   margin-bottom: 20px;
 }
 #projects .form-control {
@@ -497,6 +497,15 @@ body {
   color: #7f90a0;
   font-weight: bold;
   margin-top: 20px;
+}
+#menu .error-message {
+  color: #ecf0f1;
+}
+#invite {
+  margin-top: 200px;
+}
+#invite .panel-body p {
+  font-size: 16px;
 }
 .navbar .form-group {
   margin-right: 5px;

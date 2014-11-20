@@ -350,13 +350,13 @@ body {
 }
 
 #projects {
-  #project-name {
-    font-size: 20px;
+  .project-name {
+    font-size: 20px !important;
     height: auto;
     margin-top: 2px;
     font-weight: 300;
   }
-  h1#project-name {
+  h1.project-name {
     color: @white;
     text-align: left;
     box-shadow: inset 0 -1px 0 #435464;
@@ -367,7 +367,7 @@ body {
     padding-top: 20px;
     padding-bottom: 20px;
   }
-  #invite {
+  .invite {
     margin-bottom: 20px;
   }
   .form-control {
@@ -532,4 +532,18 @@ body {
   color: @darkblue + 80;
   font-weight: bold;
   margin-top: 20px;
+}
+
+#menu .error-message {
+  color: @white;
+}
+
+#invite {
+  margin-top: 200px;
+  .panel-body {
+    p {
+      font-size: 16px;
+
+    }
+  }
 }

@@ -11,7 +11,8 @@ var styleSheets = [
 
 // will be combined and minified in specific order
 var scripts = [
-    'bower_components/jquery/dist/jquery.js',
+    //'bower_components/jquery/dist/jquery.js',
+    'dev/js/jquery.js',
     'bower_components/bootstrap/dist/js/bootstrap.js',
     'dev/js/Chart.js',
     'dev/js/jquery.bootstrap-autohidingnavbar.js',

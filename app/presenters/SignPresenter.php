@@ -3,10 +3,12 @@
 namespace App\Presenters;
 
 use App\Model;
+use App\Model\Entities\Invite;
 use App\Model\Services\AuthenticationService;
 use Doctrine\ORM\EntityNotFoundException;
 use Kdyby\Doctrine\DuplicateEntryException;
 use Kdyby\Doctrine\EntityManager;
+use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
@@ -24,6 +26,9 @@ class SignPresenter extends BasePresenter
     /** @var AuthenticationService @inject * */
     public $authenticationService;
 
+    /** @var Invite */
+    private $invite;
+
     /**
      * Redirect logged user to the dashboard
      */
@@ -33,6 +38,19 @@ class SignPresenter extends BasePresenter
 
         if ($this->action != 'out' && $this->user->isLoggedIn()) {
             $this->redirect('Dashboard:default');
+        }
+    }
+
+    public function actionUp($id)
+    {
+        if ($id) {
+            $this->invite = $this->em->getDao(Model\Entities\Invite::getClassName())->findOneBy(['token' => $id, 'valid' => true]);
+            if (!$this->invite) {
+                throw new BadRequestException;
+            }
+
+            $this->flashMessage('You have been invited to project '.$this->invite->getProject()->getName().'. If you wish to collaborate, please sign up first.', 'info');
+            $this['registerForm']['username']->setValue($this->invite->getEmail());
         }
     }
 
@@ -111,6 +129,10 @@ class SignPresenter extends BasePresenter
             $user->setAvatar($values->avatar);
             $user->setFullname($values->fullname);
 
+            if ($this->invite) {
+                $user->addProject($this->invite->getProject());
+            }
+
             $this->em->persist($user);
             $this->em->flush();
 
@@ -152,7 +174,7 @@ class SignPresenter extends BasePresenter
     {
         $form = new Form();
 
-        $form->addText('username', 'E-mail (will be your username')
+        $form->addText('username', 'E-mail (will be your username)')
             ->addRule(Form::EMAIL)
             ->setRequired();
         $form->addPassword('password', 'Password')
