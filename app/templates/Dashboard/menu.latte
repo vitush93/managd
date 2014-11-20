@@ -10,7 +10,7 @@
                 <ul class="menu">
                     {foreach $userInfo->getProjects() as $project}
                         <li>
-                            <a href=""><i class="fa {$project->icon} {$project->color}-o"></i> {$project->name}{if $project->isOwner($userInfo)}*{/if}</a>
+                            <a href="{link Project:default $project->id}"><i class="fa {$project->icon} {$project->color}-o"></i> {$project->name}{if $project->isOwner($userInfo)}*{/if}</a>
                         </li>
                     {/foreach}
                     <li>

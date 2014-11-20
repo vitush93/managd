@@ -1,0 +1,76 @@
+
+{block upcoming_tasks}
+    {var $upcoming}
+    {foreach $project->getTasks() as $t}
+        {continueIf !($t->isUpcoming())}
+        {$upcoming++}
+        <div class="task">
+            <aside class="task-icon">
+                <span class="strip {$t->color}"></span>
+                                <span class="task-icon project-icon {$t->project->color}">
+                                    <i class="fa {$t->project->icon}"></i>
+                                </span>
+            </aside>
+            <main class="task-desc">
+                {$t->title}
+                <span class="label label-{$t->getLabelStyle()}"><i class="fa fa-clock-o"></i> {$t->getDueOffset()}</span>
+            </main>
+            <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
+        </div>
+    {/foreach}
+{/block}
+
+{block tasks}
+
+    {foreach $project->getTasks() as $t}
+        {continueIf ($t->isUpcoming())}
+        <div class="task">
+            <aside class="task-icon">
+                <span class="strip {$t->color}"></span>
+                                <span class="task-icon project-icon {$t->project->color}">
+                                    <i class="fa {$t->project->icon}"></i>
+                                </span>
+            </aside>
+            <main class="task-desc">
+                {$t->title}
+                <span class="label label-{$t->getLabelStyle()}"><i class="fa fa-clock-o"></i> {$t->getDueOffset()}</span>
+            </main>
+            <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
+        </div>
+    {/foreach}
+
+{/block}
+
+{block content}
+    <div class="container" id="main">
+        <div class="row">
+
+            {includeblock 'menu.latte'}
+
+            <div class="col-sm-8 col-md-9" id="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {if $userInfo->getTasks()->count() == 0}
+                            <p class="content-notify">Yay, there are no tasks in this project!</p>
+                        {else}
+                            {if $userInfo->hasUpcoming()}
+                                <div class="heading">
+                                    <h5>Upcoming / Due</h5>
+                                </div>
+                                <div class="task-list">
+                                    {include upcoming_tasks}
+                                </div>
+                            {/if}
+                            <div class="heading">
+                                <h5>My Tasks</h5>
+                            </div>
+                            <div class="task-list">
+                                {include tasks}
+                            </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

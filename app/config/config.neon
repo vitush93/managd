@@ -30,6 +30,7 @@ services:
             - addResource('Dashboard')
             - addResource('Homepage')
             - addResource('Sign')
+            - addResource('Project')
             - allow('user')
             - allow('guest', 'Homepage')
             - allow('guest', 'Sign')

@@ -20,7 +20,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     /** @var EntityManager @inject */
     public $em;
 
-    public function startup()
+    protected function startup()
     {
         parent::startup();
 

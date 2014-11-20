@@ -2,8 +2,8 @@
 
 namespace App\Presenters;
 
-use Nette,
-    App\Model;
+use App\Model;
+use Nette;
 
 
 /**
@@ -15,7 +15,7 @@ class HomepagePresenter extends BasePresenter
     /**
      * Redirect logged user to the dashboard
      */
-    public function startup()
+    protected function startup()
     {
         parent::startup();
 

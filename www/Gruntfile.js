@@ -15,7 +15,6 @@ var scripts = [
     'bower_components/bootstrap/dist/js/bootstrap.js',
     'dev/js/Chart.js',
     'dev/js/jquery.bootstrap-autohidingnavbar.js',
-    'dev/js/charts.js',
     'dev/js/nette.ajax.js',
     'dev/js/live-form-validation.js',
     'dev/js/page.js'

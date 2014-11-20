@@ -25,16 +25,19 @@ class Project extends BaseEntity
      * @var User
      */
     private $owner;
+
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="project")
      * @var ArrayCollection
      */
     private $tasks;
+
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="projects")
      * @var ArrayCollection
      */
     private $users;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -42,16 +45,19 @@ class Project extends BaseEntity
      * @var integer
      */
     private $id;
+
     /**
      * @ORM\Column(type="string")
      * @var string
      */
     private $name;
+
     /**
      * @ORM\Column(type="string")
      * @var string
      */
     private $icon;
+
     /**
      * @ORM\Column(type="string")
      * @var string
