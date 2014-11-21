@@ -21,16 +21,19 @@ class Task extends BaseEntity
      * @var User
      */
     private $assignee;
+
     /**
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="tasks")
      * @var Project
      */
     private $project;
+
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
      * @var ArrayCollection
      */
     private $comments;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -38,36 +41,43 @@ class Task extends BaseEntity
      * @var integer
      */
     private $id;
+
     /**
      * @ORM\Column(type="string")
      * @var string
      */
     private $title;
+
     /**
      * @ORM\Column(type="datetime")
      * @var string
      */
     private $created;
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @var string
      */
     private $due;
+
     /**
      * @ORM\Column(type="text", nullable=true)
      * @var string
      */
     private $text;
+
     /**
      * @ORM\Column(type="string")
      * @var string
      */
     private $color;
+
     /**
      * @ORM\Column(type="boolean")
      * @var string
      */
     private $completed;
+
     /**
      * @ORM\Column(type="string", nullable=true)
      * @var string

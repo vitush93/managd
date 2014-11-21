@@ -17,11 +17,13 @@ class ProjectPresenter extends BasePresenter
     public function actionDefault($id)
     {
         $p = $this->projectRepository->find($id);
-        if (!$p) throw new BadRequestException;
+        if (!$p) throw new BadRequestException; // is there such a project?
+        if (!$p->getUsers()->contains($this->user())) throw new BadRequestException; // does current user actually collaborating on this project?
+
         $this->project = $p;
     }
 
-    public function renderDefault($id)
+    public function renderDefault()
     {
         if (!isset($this->template->var)) {
             $this->template->var = 'default';
@@ -68,10 +70,10 @@ class ProjectPresenter extends BasePresenter
         $mail = new Message();
         $mail->setFrom("Manag'd <help@managd.com>")
             ->addTo($values->email)
-            ->setSubject($this->user()->getFullname().' invited you to work on a project!')
+            ->setSubject($this->user()->getFullname() . ' invited you to work on a project!')
             ->setHtmlBody('
-            <h1>Hi, you have been invited to collaborate on '.$this->project->name.'</h1>
-            <p>Proceed by clicking on <a href="'.$this->link('//Homepage:invite', $inv->getToken()).'">here</a>.</p>
+            <h1>Hi, you have been invited to collaborate on ' . $this->project->name . '</h1>
+            <p>Proceed by clicking on <a href="' . $this->link('//Homepage:invite', $inv->getToken()) . '">here</a>.</p>
             <p>Peace out,<br>Manag\'d team</p>
             ');
         $mailer = new SendmailMailer();

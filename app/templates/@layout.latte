@@ -1,49 +1,142 @@
 {block |minifyhtml}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
 
-    <title>{ifset #title}{include title|striptags} | {/ifset}Manag'd</title>
+        <title>{ifset #title}{include title|striptags} | {/ifset}Manag'd</title>
 
-    <link href='http://fonts.googleapis.com/css?family=Roboto:900,400italic,700italic,300,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/master.css">
-    <link rel="icon" type="image/png" href="{$basePath}/paw.png">
+        <link href='http://fonts.googleapis.com/css?family=Roboto:900,400italic,700italic,300,700,400&subset=latin,latin-ext'
+              rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/master.css">
+        <link rel="icon" type="image/png" href="{$basePath}/paw.png">
 
-    <script src="{$basePath}/js/master.js"></script>
-</head>
+        <script src="{$basePath}/js/master.js"></script>
+    </head>
 
-<body>
+    <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
-    <div class="container">
-        <a href="{link Dashboard:default}" class="navbar-brand"><img src="{$basePath}/images/avatars/{$userInfo->avatar}.png" alt="" title="" class="img-circle" id="avatar">
-            <span class="hidden-xs">{$userInfo->fullname}</span></a>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
+        <div class="container">
+            <a href="{link Dashboard:default}" class="navbar-brand"><img
+                        src="{$basePath}/images/avatars/{$userInfo->avatar}.png" alt="" title="" class="img-circle"
+                        id="avatar">
+                <span class="hidden-xs">{$userInfo->fullname}</span></a>
 
-        <ul id="nav">
-            <li data-toggle="modal" data-target="#newTaskModal"><a><i class="fa fa-plus-circle"></i></a></li>
-            <li data-toggle="modal" data-target="#projectModal"><a><i class="fa fa-book"></i></a></li>
-            <li><a href=""><i class="fa fa-bell"></i> <span class="badge">12</span></a></li>
-            <li><a href="{link Sign:out}"><i class="fa fa-sign-out"></i></a></li>
-        </ul>
+            <ul id="nav">
+                <li data-toggle="modal" data-target="#newTaskModal"><a><i class="fa fa-plus-circle"></i></a></li>
+                <li data-toggle="modal" data-target="#projectModal"><a><i class="fa fa-book"></i></a></li>
+                <li><a href=""><i class="fa fa-bell"></i> <span class="badge">12</span></a></li>
+                <li><a href="{link Sign:out}"><i class="fa fa-sign-out"></i></a></li>
+            </ul>
+        </div>
     </div>
-</div>
 
-{*include '../components/modalForm.latte', form => newTaskForm, id=>'newTaskModal', title=>'Add new task'*}
+    <!-- TASK MODAL -->
 
-<!-- PROJECTS MODAL -->
+    <div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {form newTaskForm}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Add new task</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <ul class=error n:if="$form->ownErrors">
+                                <li n:foreach="$form->ownErrors as $error">{$error}</li>
+                            </ul>
 
-<div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">My projects</h4>
+                            <div class="form-group required">
+                                {label title /}
+                                {input title}
+                            </div>
+
+                            <div class="form-group required">
+                                {label project /}
+                                {input project}
+                            </div>
+
+                            <div class="form-group required">
+                                {label due /}
+                                {input due}
+                            </div>
+
+                            <div class="form-group">
+                                {label text /}
+                                {input text}
+                                <span>Markdown syntax</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Color tag</label>
+
+                                <div class="color-picker clearfix">
+                                    <div class="img-circle white color-pick active"  data-color="white"></div>
+                                    <div class="img-circle orange color-pick" data-color="orange"></div>
+                                    <div class="img-circle green color-pick" data-color="green"></div>
+                                    <div class="img-circle red color-pick"  data-color="red"></div>
+                                    <div class="img-circle yellow color-pick"  data-color="yellow"></div>
+                                    <div class="img-circle blue color-pick"  data-color="blue"></div>
+                                    <div class="img-circle purple color-pick"  data-color="purple"></div>
+                                    <div class="img-circle turq color-pick"  data-color="turq"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Assignee</label>
+                                <div id="task-assignees">
+                                    <p>
+                                        <img src="{$basePath}/images/avatars/{$userInfo->avatar}.png" alt="" title="" class="assignee-pick selected img-circle" data-user="{$userInfo->id}">
+                                        <span>{$userInfo->fullname}</span>
+                                    </p>
+                                    {ifCurrent Project:*}
+                                    {foreach $project->users as $u}
+                                        {continueIf $u == $userInfo}
+                                        <p>
+                                            <img src="{$basePath}/images/avatars/{$u->avatar}.png" alt="" title="" class="assignee-pick img-circle" data-user="{$u->id}">
+                                            <span>{$u->fullname}</span>
+                                        </p>
+                                    {/foreach}
+                                    {/ifCurrent}
+                                </div>
+                            </div>
+
+                            {input color, class => 'color-input'}
+                            {input assignee}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        {input send}
+                    </div>
+                {/form}
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+
+    <!-- PROJECTS MODAL -->
+
+    <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">My projects</h4>
+                </div>
                 <div class="modal-body">
 
                     <table class="table table-responsive">
@@ -54,7 +147,8 @@
                                 </td>
                                 <td>
                                     {if $p->owner == $userInfo}
-                                        <a href="{link deleteProject! $p->id}" onclick="return confirm('Are you sure?')" class="pull-right"><i class="fa fa-trash fa-2x"></i></a>
+                                        <a href="{link deleteProject! $p->id}" onclick="return confirm('Are you sure?')"
+                                           class="pull-right"><i class="fa fa-trash fa-2x"></i></a>
                                     {/if}
                                 </td>
                             </tr>
@@ -62,37 +156,36 @@
                     </table>
 
                     {form modalProjectForm}
-                        {input name}
-                        {input send}
+                    {input name}
+                    {input send}
                     {/form}
                 </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- MODAL -->
+    <!-- MODAL -->
 
 
-<div class="container" n:if="count($flashes) > 0" id="landing-flashes">
-    <div class="row">
-        <div class="col-lg-12">
-            <div n:foreach="$flashes as $flash" class="landing alert alert-{$flash->type}">
-                {$flash->message}
-                <button type="button" class="close" data-dismiss="alert">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">Close</span>
-                </button>
+    <div class="container" n:if="count($flashes) > 0" id="landing-flashes">
+        <div class="row">
+            <div class="col-lg-12">
+                <div n:foreach="$flashes as $flash" class="landing alert alert-{$flash->type}">
+                    {$flash->message}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-{include content}
+    {include content}
 
-</body>
-</html>
-
+    </body>
+    </html>
 {/block}

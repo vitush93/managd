@@ -44,7 +44,7 @@ class SignPresenter extends BasePresenter
                 throw new BadRequestException;
             }
 
-            $this->flashMessage('You have been invited to project '.$this->invite->getProject()->getName().'. If you wish to collaborate, please sign up first.', 'info');
+            $this->flashMessage('You have been invited to project ' . $this->invite->getProject()->getName() . '. If you wish to collaborate, please sign up first.', 'info');
             $this['registerForm']['username']->setValue($this->invite->getEmail());
         }
     }
@@ -123,6 +123,11 @@ class SignPresenter extends BasePresenter
             $user->setPassword($values->password);
             $user->setAvatar($values->avatar);
             $user->setFullname($values->fullname);
+
+            $project = new Model\Entities\Project();
+            $project->setName('Default project');
+            $project->setOwner($user);
+            $this->em->persist($project);
 
             if ($this->invite) {
                 $user->addProject($this->invite->getProject());

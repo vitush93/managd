@@ -1,7 +1,11 @@
-$(function() {
+$(function () {
     $('#navbar').autoHidingNavbar();
 
     var $body = $('body');
+
+    $('.datepicker').datepicker({
+        startDate: '+1d'
+    });
 
     $body.on('click', '.task-icon', function () {
         var task = $(this).parent('.task');
@@ -24,6 +28,12 @@ $(function() {
     if ($pf.length > 0) {
         $pf.tooltip();
     }
+
+    $body.on('click', '.color-pick', function () {
+        $('.color-pick').removeClass('active');
+        $(this).addClass('active');
+        $('.color-input').val($(this).data('color'));
+    });
 
     $.nette.init();
 

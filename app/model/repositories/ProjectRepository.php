@@ -24,6 +24,19 @@ class ProjectRepository extends Object
     }
 
     /**
+     * @param User $user
+     * @return array
+     */
+    public function projectPairs(User $user)
+    {
+        $pairs = array();
+        foreach ($user->getProjects() as $project) {
+            $pairs[$project->id] = $project->name;
+        }
+        return $pairs;
+    }
+
+    /**
      * @param $id
      * @return null|Project
      */

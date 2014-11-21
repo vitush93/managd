@@ -513,6 +513,29 @@ body {
 #projectModal table tr td p {
   font-size: 15px;
 }
+.color-pick {
+  height: 55px;
+  width: 55px;
+  cursor: pointer;
+  box-shadow: inset 0px 0px 0px 2px #2f4050;
+  float: left;
+  margin: 5px;
+}
+.color-pick.active {
+  box-shadow: inset 0px 0px 0px 4px #2f4050;
+}
+.modal #task-assignees span {
+  color: #2f4050;
+}
+.modal #task-assignees img {
+  width: 50px;
+  height: 50px;
+  box-shadow: 0px 0px 0px 2px #2f4050;
+  opacity: 0.5;
+}
+.modal #task-assignees img.selected {
+  opacity: 1;
+}
 .navbar .form-group {
   margin-right: 5px;
 }
