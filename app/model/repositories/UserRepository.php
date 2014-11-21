@@ -7,7 +7,7 @@ use Kdyby\Doctrine\EntityDao;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Object;
 
-class UserRepository extends Object
+class UserRepository extends Object implements IRepository
 {
 
     /** @var EntityDao */
@@ -53,7 +53,7 @@ class UserRepository extends Object
      */
     public function remove($id)
     {
-        $this->userDao->delete($this->find($id));
+        $this->em->remove($this->find($id));
     }
 
 } 
