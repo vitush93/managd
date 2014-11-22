@@ -27,3 +27,4 @@ services:
 
     # logic
     - App\Model\Notifications
+    - App\Libs\FormValidators

@@ -2,7 +2,7 @@
 
 namespace App\Presenters;
 
-use App\Model\Entities\Task;
+use App\Libs\FormValidators;
 use App\Model\Entities\User;
 use App\Model\Notifications;
 use App\Model\Repositories\ProjectRepository;
@@ -33,6 +33,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
     /** @var Notifications @inject */
     public $notifications;
+
+    /** @var FormValidators @inject */
+    public $formValidators;
 
     /** @var EntityManager @inject */
     public $em;
@@ -181,76 +184,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         $form->addSubmit('process', 'Sign In')
             ->getControlPrototype()->class('btn btn-default');
         $form->onSuccess[] = $this->loginFormSucceeded;
-
-        return $form;
-    }
-
-    /**
-     * Adds new task.
-     *
-     * @param Form $form
-     * @param $values
-     */
-    public function newTask(Form $form, $values)
-    {
-        // TODO if project - validate assignees
-        // TODO if not project - validate project
-        // TODO check if user actually owns given project
-        dump($values);
-        die;
-    }
-
-    /**
-     * NewTask modal form factory.
-     *
-     * @return Form
-     */
-    protected function createComponentNewTaskForm()
-    {
-        $form = new Form();
-
-        $form->addText('title', 'Title')
-            ->setRequired()
-            ->addRule(Form::MIN_LENGTH, null, 3);
-        $form->addText('due', 'Due date')
-            ->setRequired()
-            ->setAttribute('autocomplete', 'off')
-            ->addRule(function ($item, $arg) {
-                try {
-                    $date = Nette\Utils\DateTime::from($item->value);
-                } catch (\Exception $e) {
-                    return false;
-                }
-                $now = new \DateTime();
-                return $date && ($now < $date);
-            }, 'Please insert a valid date.');
-        $form->addTextArea('text', 'Text', 10, 6)
-            ->setOmitted('description', 'Markdown syntax');
-        $form->addSelect('project', 'Project', $this->projectRepository->projectPairs($this->user()))
-            ->setRequired();
-
-        if ($this->presenter->name == 'Project') {
-            $form['project']->setDefaultValue($this->getParameter('id'));
-        }
-
-        foreach ($form->getControls() as $control) {
-            $control->getControlPrototype()->class('form-control');
-        }
-        $form['due']->getControlPrototype()->class('form-control datepicker');
-
-
-        $form->addHidden('assignee', $this->user()->getId())
-            ->setRequired();
-        $form->addHidden('color', 'white')
-            ->addRule(function ($item, $arg) {
-                return in_array($item->value, Task::$COLORS);
-            }, 'Please enter a valid color.')
-            ->setRequired();
-
-        $form->addSubmit('send', 'Create Task')
-            ->getControlPrototype()->class('btn btn-primary');
-
-        $form->onSuccess[] = $this->newTask;
 
         return $form;
     }

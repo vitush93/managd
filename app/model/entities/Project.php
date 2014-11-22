@@ -3,6 +3,7 @@
 namespace App\Model\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby\Doctrine\Entities\BaseEntity;
 
@@ -165,6 +166,20 @@ class Project extends BaseEntity
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * Get project's uncompleted tasks ordered by due date.
+     *
+     * @return \Doctrine\Common\Collections\Collection|static
+     */
+    public function getUncompletedTasks()
+    {
+        return $this->tasks->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->eq('completed', FALSE))
+                ->orderBy(array('due' => 'ASC'))
+        );
     }
 
     /**

@@ -1,15 +1,11 @@
 
 {block upcoming_tasks}
-    {var $upcoming}
     {foreach $project->getTasks() as $t}
         {continueIf !($t->isUpcoming())}
-        {$upcoming++}
         <div class="task">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
-                                <span class="task-icon project-icon {$t->project->color}">
-                                    <i class="fa {$t->project->icon}"></i>
-                                </span>
+                <img src="{$basePath}/images/avatars/{$t->assignee->avatar}.png" class="img-circle">
             </aside>
             <main class="task-desc">
                 {$t->title}
@@ -27,9 +23,7 @@
         <div class="task">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
-                                <span class="task-icon project-icon {$t->project->color}">
-                                    <i class="fa {$t->project->icon}"></i>
-                                </span>
+                <img src="{$basePath}/images/avatars/{$t->assignee->avatar}.png" class="img-circle">
             </aside>
             <main class="task-desc">
                 {$t->title}
@@ -51,8 +45,8 @@
 
                             {if $userInfo == $project->owner}
                                 {form projectName}
-                                {input name}
-                                {input send}
+                                    {input name}
+                                    {input send}
                                 {/form}
                             {else}
                                 <h1 class="project-name">Project name</h1>

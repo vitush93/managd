@@ -4,10 +4,12 @@ namespace App\Presenters;
 
 use App\Model\Entities\Invite;
 use App\Model\Entities\Project;
+use App\Model\Entities\Task;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
+use Nette\Utils\DateTime;
 
 class ProjectPresenter extends BasePresenter
 {
@@ -125,6 +127,76 @@ class ProjectPresenter extends BasePresenter
         $form->addSubmit('send', '')
             ->getControlPrototype()->class('form-control hidden');
         $form->onSuccess[] = $this->changeProjectName;
+
+        return $form;
+    }
+
+    /**
+     * Adds a new task.
+     *
+     * @param Form $form
+     * @param $values
+     */
+    public function newTask(Form $form, $values)
+    {
+        $task = new Task();
+        $task->setProject($this->project);
+        $task->setAssignee($this->user());
+        $task->setColor($values->color);
+        if (!empty($values->due)) {
+            $task->setDue(new DateTime($values->due));
+        }
+        $task->setText($values->text);
+        $task->setTitle($values->title);
+
+        $this->em->persist($task);
+        $this->em->flush();
+
+        $this->flashMessage('New task ' . $task->getTitle() . ' has been created', 'success');
+        $this->redirect('this');
+    }
+
+    /**
+     * NewTask modal form factory.
+     *
+     * @return Form
+     */
+    protected function createComponentNewTaskForm()
+    {
+        $this->formValidators->setUser($this->user());
+        $this->formValidators->setProject($this->project);
+
+        $form = new Form();
+        $form->addText('title', 'Title')
+            ->setAttribute('autocomplete', 'off')
+            ->setRequired()
+            ->addRule(Form::MIN_LENGTH, null, 3);
+        $form->addText('due', 'Due date')
+            ->setAttribute('autocomplete', 'off')
+            ->addCondition(Form::FILLED)
+            ->addRule($this->formValidators->dueValidator, 'Please insert a valid date.');
+        $form->addTextArea('text', 'Text', 10, 8)
+            ->setAttribute('placeholder', "The shopping list\n=================\nIt is *essential* to acquire following items:\n- bread\n- beer\n- potatoes");
+
+        foreach ($form->getControls() as $control) {
+            $control->getControlPrototype()
+                ->class('form-control');
+        }
+        $form['due']->getControlPrototype()
+            ->class('form-control datepicker');
+
+        $form->addHidden('assignee', $this->user()->getId())
+            ->setRequired()
+            ->addRule($this->formValidators->assigneeValidator, 'Permission denied.');
+        $form->addHidden('color', 'white')
+            ->setRequired()
+            ->addRule($this->formValidators->colorValidator, 'Please enter a valid color.');
+
+        $form->addSubmit('send', 'Create Task')
+            ->getControlPrototype()
+            ->class('btn btn-primary');
+
+        $form->onSuccess[] = $this->newTask;
 
         return $form;
     }

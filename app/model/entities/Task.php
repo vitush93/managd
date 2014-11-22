@@ -13,7 +13,7 @@ use Kdyby\Doctrine\Entities\BaseEntity;
 class Task extends BaseEntity
 {
     public static $COLORS = array(
-        'orange', 'red', 'yellow', 'blue', 'white', 'purple', 'turq'
+        'orange', 'red', 'yellow', 'blue', 'white', 'purple', 'turq', 'green'
     );
 
     /**

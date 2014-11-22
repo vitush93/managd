@@ -1,9 +1,7 @@
 
 {block upcoming_tasks}
-    {var $upcoming}
     {foreach $userInfo->getTasks() as $t}
         {continueIf !($t->isUpcoming())}
-        {$upcoming++}
         <div class="task">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
