@@ -62,7 +62,7 @@
                                 {foreach $project->users as $u}
                                     <p>
                                         <img src="{$basePath}/images/avatars/{$u->avatar}.png" alt="" title="">
-                                        <span>{$u->fullname}{if $project->owner == $userInfo}*{/if}</span>
+                                        <span>{$u->fullname}{if $project->owner == $u}*{/if}</span>
                                     </p>
                                 {/foreach}
                             </div>

@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 use App\Model;
 use App\Model\Entities\Invite;
+use App\Model\Entities\User;
 use Nette;
 
 
@@ -43,10 +44,17 @@ class HomepagePresenter extends BasePresenter
             $this->redirect('Sign:up');
         }
 
-        $user = $this->em->getDao(Model\Entities\User::getClassName())->findOneBy(['username' => $this->invite->getEmail()]);
+        /** @var User $user */
+        $user = $this->em->getDao(User::getClassName())->findOneBy(['username' => $this->invite->getEmail()]);
         if ($user) {
             $user->addProject($this->invite->getProject());
+            $this->invite->getProject()->addUser($user);
+
             $this->em->flush();
+
+            if ($this->user->isLoggedIn()) {
+                $this->user();
+            }
 
             $this->flashMessage('You have joined ' . $this->invite->getProject()->getName() . ' project!', 'success');
             $this->redirect('Dashboard:default');
