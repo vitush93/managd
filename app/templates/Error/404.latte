@@ -1,8 +1,40 @@
-{block content}
-<h1 n:block=title>Page Not Found</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Manag'd Page not found</title>
+    <link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/master.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:900,400italic,700italic,300,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/png" href="{$basePath}/paw.png">
+</head>
+<body>
 
-<p>The page you requested could not be found. It is possible that the address is
-incorrect, or that the page no longer exists. Please use a search engine to find
-what you are looking for.</p>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
+            {if $user->isLoggedIn()}
+                <a href="{link Dashboard:default}" class="navbar-brand"><img
+                            src="{$basePath}/images/avatars/{$userInfo->avatar}.png" alt="" title="" class="img-circle"
+                            id="avatar">
+                    <span class="hidden-xs">{$userInfo->fullname}</span></a>
+            {else}
+                <a href="{link Homepage:default}" class="navbar-brand"><i class="fa fa-paw"></i> manag'd</a>
+            {/if}
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
 
-<p><small>error 404</small></p>
+    <div class="container" id="error-page">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>error 404</h1>
+                <p>it looks like you found a Dead Link! :(</p>
+            </div>
+            <div class="col-md-12">
+                <img src="{$basePath}/images/dead_link.png" alt="" title="">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

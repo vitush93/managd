@@ -14,6 +14,7 @@ php:
 nette:
     application:
         errorPresenter: Error
+        catchExceptions: true
         mapping:
             *: App\*Module\Presenters\*Presenter
 
@@ -31,8 +32,10 @@ services:
             - addResource('Homepage')
             - addResource('Sign')
             - addResource('Project')
+            - addResource('Error')
             - allow('user')
             - allow('guest', 'Homepage')
             - allow('guest', 'Sign')
+            - allow('guest', 'Error')
     - App\RouterFactory
     router: @App\RouterFactory::createRouter
