@@ -12,7 +12,7 @@
                 {$t->title}
                 <span class="label label-{$t->getLabelStyle()}"><i class="fa fa-clock-o"></i> {$t->getDueOffset()}</span>
             </main>
-            <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
+            <a href="{link Task:default $t->id}" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
         </div>
     {/foreach}
 {/block}
@@ -31,7 +31,7 @@
                 {$t->title}
                 <span class="label label-{$t->getLabelStyle()}"><i class="fa fa-clock-o"></i> {$t->getDueOffset()}</span>
             </main>
-            <a href="" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
+            <a href="{link Task:default $t->id}" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
         </div>
     {/foreach}
 

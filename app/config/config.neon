@@ -33,6 +33,7 @@ services:
             - addResource('Sign')
             - addResource('Project')
             - addResource('Error')
+            - addResource('Task')
             - allow('user')
             - allow('guest', 'Homepage')
             - allow('guest', 'Sign')

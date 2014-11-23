@@ -51,7 +51,7 @@ class TaskRepository extends Object implements IRepository
 
     /**
      * @param $id
-     * @return null|object
+     * @return Task
      */
     public function find($id)
     {

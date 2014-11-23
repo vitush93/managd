@@ -19,8 +19,8 @@ class ProjectPresenter extends BasePresenter
     public function actionDefault($id)
     {
         $p = $this->projectRepository->find($id);
-        if (!$p) throw new BadRequestException; // is there such a project?
-        if (!$p->getUsers()->contains($this->user())) throw new BadRequestException; // does current user actually collaborating on this project?
+        if (!$p) throw new BadRequestException("this project does not exists"); // is there such a project?
+        if (!$p->getUsers()->contains($this->user())) throw new BadRequestException("user does not have acces to this project"); // does current user actually collaborating on this project?
 
         $this->project = $p;
     }
