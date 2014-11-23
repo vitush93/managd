@@ -2,6 +2,8 @@ $(function () {
     $('#navbar').autoHidingNavbar();
 
     var $body = $('body');
+    var $actionBar = $('#actionBar');
+    var $navbar = $('#navbar');
 
     $('.datepicker').datepicker({
         startDate: '+1d'
@@ -14,7 +16,24 @@ $(function () {
         } else {
             task.addClass('selected');
         }
-    })
+        if ($('.task.selected').length > 0) {
+            $navbar.hide();
+            $actionBar.children('.container').fadeIn();
+            $actionBar.show();
+        } else {
+            $actionBar.hide();
+            $actionBar.children('.container').hide();
+            $navbar.show();
+        }
+    });
+
+    $body.on('click', '#task-deselect', function (e) {
+        e.preventDefault();
+        $('.task').removeClass('selected');
+        $actionBar.hide();
+        $actionBar.children('.container').hide();
+        $navbar.show();
+    });
 
     $body.on('click', '.avatar-pick', function () {
         $('.avatar-pick').removeClass('selected');

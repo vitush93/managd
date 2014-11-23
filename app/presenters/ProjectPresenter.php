@@ -99,8 +99,10 @@ class ProjectPresenter extends BasePresenter
         $form->getElementPrototype()->class('ajax');
 
         $form->addText('email', '')
-            ->addRule(Form::EMAIL)
             ->setAttribute('placeholder', 'invite by e-mail')
+            ->addCondition(Form::FILLED)
+            ->addRule(Form::EMAIL);
+        $form['email']
             ->getControlPrototype()->class('form-control invite');
         $form->addSubmit('send', '')
             ->getControlPrototype()

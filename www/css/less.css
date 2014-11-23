@@ -522,7 +522,7 @@ body {
   margin: 5px;
 }
 .color-pick.active {
-  box-shadow: inset 0px 0px 0px 4px #2f4050;
+  box-shadow: inset 0px 0px 0px 16px #2f4050;
 }
 .modal #task-assignees span {
   color: #2f4050;
@@ -555,6 +555,38 @@ body {
 #error-page p {
   font-size: 32px;
   font-weight: 300;
+}
+#actionBar {
+  background: #6b7c8c;
+  display: none;
+  height: 64px;
+}
+#actionBar .container {
+  display: none;
+}
+#actionBar .navbar-brand {
+  color: #ecf0f1;
+  height: 64px;
+  display: block;
+  cursor: pointer;
+}
+#actionBar ul {
+  padding: 0;
+  margin: 0;
+}
+#actionBar ul li {
+  padding: 0;
+  margin: 0;
+  display: block;
+  float: left;
+}
+#actionBar ul li a {
+  color: #ecf0f1;
+  display: block;
+  line-height: 64px;
+  height: 64px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 .navbar .form-group {
   margin-right: 5px;
