@@ -271,7 +271,7 @@ class Task extends BaseEntity
     {
         $due = $this->_getDueOffset();
 
-        if ($due < 0) {
+        if ($due < 0 || $due === null) {
             return 'default';
         }
 
@@ -291,12 +291,12 @@ class Task extends BaseEntity
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     private function _getDueOffset()
     {
-        if (!$this->due) {
-            return 0;
+        if ($this->due === null) {
+            return null;
         }
 
         $now = new \DateTime();
@@ -317,7 +317,7 @@ class Task extends BaseEntity
     {
         $due = $this->_getDueOffset();
 
-        if ($due < 0) {
+        if ($due < 0 || $due === null) {
             return 'due';
         }
 

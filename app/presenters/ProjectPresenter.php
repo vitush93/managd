@@ -141,7 +141,7 @@ class ProjectPresenter extends BasePresenter
     {
         $task = new Task();
         $task->setProject($this->project);
-        $task->setAssignee($this->user());
+        $task->setAssignee($this->userRepository->find($values->assignee));
         $task->setColor($values->color);
         if (!empty($values->due)) {
             $task->setDue(new DateTime($values->due));
@@ -187,7 +187,8 @@ class ProjectPresenter extends BasePresenter
 
         $form->addHidden('assignee', $this->user()->getId())
             ->setRequired()
-            ->addRule($this->formValidators->assigneeValidator, 'Permission denied.');
+            ->addRule($this->formValidators->assigneeValidator, 'Permission denied.')
+            ->getControlPrototype()->class('picked-assignee');
         $form->addHidden('color', 'white')
             ->setRequired()
             ->addRule($this->formValidators->colorValidator, 'Please enter a valid color.');

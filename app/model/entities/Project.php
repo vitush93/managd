@@ -183,6 +183,19 @@ class Project extends BaseEntity
     }
 
     /**
+     * @return \Doctrine\Common\Collections\Collection|static
+     */
+    public function getUpcomingTasks()
+    {
+        return $this->tasks->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->lte('due', new \DateTime('+3 days')))
+                ->andWhere(Criteria::expr()->eq('completed', FALSE))
+                ->orderBy(array('due' => 'ASC'))
+        );
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getUsers()
@@ -215,6 +228,21 @@ class Project extends BaseEntity
     public function isOwner(User $user)
     {
         return ($this->owner == $user);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function hasUpcoming()
+    {
+        foreach($this->tasks as $t) {
+            if($t->isUpcoming()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

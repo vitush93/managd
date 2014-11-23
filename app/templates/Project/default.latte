@@ -1,7 +1,8 @@
 
 {block upcoming_tasks}
-    {foreach $project->getTasks() as $t}
-        {continueIf !($t->isUpcoming())}
+    {* {foreach $project->getTasks() as $t}
+        {continueIf !($t->isUpcoming())} *}
+    {foreach $project->getUpcomingTasks() as $t}
         <div class="task">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
@@ -20,6 +21,7 @@
 
     {foreach $project->getTasks() as $t}
         {continueIf ($t->isUpcoming())}
+
         <div class="task">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
@@ -49,7 +51,7 @@
                                     {input send}
                                 {/form}
                             {else}
-                                <h1 class="project-name">Project name</h1>
+                                <h1 class="project-name">{$project->name}</h1>
                             {/if}
 
                             <div id="task-assignees">
@@ -120,10 +122,10 @@
             <div class="col-sm-8 col-md-9" id="content">
                 <div class="row">
                     <div class="col-xs-12">
-                        {if $userInfo->getTasks()->count() == 0}
+                        {if $project->getTasks()->count() == 0}
                             <p class="content-notify">Yay, there are no tasks in this project!</p>
                         {else}
-                            {if $userInfo->hasUpcoming()}
+                            {if $project->hasUpcoming()}
                                 <div class="heading">
                                     <h5>Upcoming / Due</h5>
                                 </div>
@@ -132,7 +134,7 @@
                                 </div>
                             {/if}
                             <div class="heading">
-                                <h5>My Tasks</h5>
+                                <h5>Project Tasks</h5>
                             </div>
                             <div class="task-list">
                                 {include tasks}

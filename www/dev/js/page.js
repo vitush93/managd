@@ -36,4 +36,10 @@ $(function () {
     });
 
     $.nette.init();
+
+    $body.on('click', '#newTaskModal .assignee-pick', function () {
+        $('#newTaskModal .assignee-pick').removeClass('selected');
+        $(this).addClass('selected');
+        $('.picked-assignee').val($(this).data('user'));
+    });
 });

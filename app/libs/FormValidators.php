@@ -19,6 +19,9 @@ class FormValidators extends Object
     /** @var EntityDao */
     private $projectDao;
 
+    /** @var EntityDao */
+    private $userDao;
+
     /** @var User */
     private $user = NULL;
 
@@ -29,6 +32,7 @@ class FormValidators extends Object
     {
         $this->em = $entityManager;
         $this->projectDao = $entityManager->getDao(Project::getClassName());
+        $this->userDao = $entityManager->getDao(User::getClassName());
     }
 
     /**
@@ -73,7 +77,12 @@ class FormValidators extends Object
      */
     public function assigneeValidator($item, $args)
     {
-        return $this->project->getUsers()->contains($this->user);
+        $u = $this->userDao->find($item->value);
+        if ($u != null) {
+            return $this->project->getUsers()->contains($u);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -109,5 +118,4 @@ class FormValidators extends Object
     }
 
 
-
-} 
+}

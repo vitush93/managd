@@ -140,7 +140,7 @@
                         {foreach $userInfo->projects as $p}
                             <tr>
                                 <td>
-                                    <p>{$p->name}</p>
+                                    <p><a href="{link Project:default $p->id}">{$p->name}</a></p>
                                 </td>
                                 <td>
                                     {if $p->owner == $userInfo}
