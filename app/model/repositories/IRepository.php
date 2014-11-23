@@ -3,6 +3,7 @@
 namespace App\Model\Repositories;
 
 use Kdyby\Doctrine\Entities\BaseEntity;
+use Kdyby\Doctrine\EntityDao;
 
 interface IRepository
 {
@@ -22,4 +23,9 @@ interface IRepository
      * @return void
      */
     public function remove($id);
+
+    /**
+     * @return EntityDao
+     */
+    public function dao();
 } 

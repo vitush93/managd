@@ -24,6 +24,14 @@ class TaskRepository extends Object implements IRepository
     }
 
     /**
+     * @return \Kdyby\Doctrine\EntityDao
+     */
+    public function dao()
+    {
+        return $this->taskDao;
+    }
+
+    /**
      * Get upcoming tasks with 2 day threshold
      *
      * @param User $user

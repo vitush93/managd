@@ -24,6 +24,14 @@ class ProjectRepository extends Object
     }
 
     /**
+     * @return EntityDao
+     */
+    public function dao()
+    {
+        return $this->projectDao;
+    }
+
+    /**
      * @param User $user
      * @return array
      */

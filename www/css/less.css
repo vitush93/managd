@@ -588,6 +588,9 @@ body {
   padding-left: 30px;
   padding-right: 30px;
 }
+#actionBar ul li a:hover {
+  color: #fff;
+}
 .navbar .form-group {
   margin-right: 5px;
 }

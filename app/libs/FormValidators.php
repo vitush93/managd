@@ -28,6 +28,20 @@ class FormValidators extends Object
     /** @var Project */
     private $project = NULL;
 
+    /**
+     * Safe parse input separated by comma.
+     * @param string $data
+     */
+    public static function explode(&$data)
+    {
+        $data = trim($data, ' ,');
+        $data = explode(',', $data);
+        array_walk($data, function (&$value, $key) {
+            $value = trim($value, ' ,');
+        });
+        $data = array_values(array_filter(array_unique($data)));
+    }
+
     public function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;

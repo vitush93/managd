@@ -332,4 +332,12 @@ class Task extends BaseEntity
         return $due . " days";
     }
 
+    /**
+     * Mark this task as completed.
+     */
+    public function setCompleted()
+    {
+        $this->completed = TRUE;
+    }
+
 }

@@ -23,6 +23,14 @@ class UserRepository extends Object implements IRepository
     }
 
     /**
+     * @return EntityDao
+     */
+    public function dao()
+    {
+        return $this->userDao;
+    }
+
+    /**
      * @param $username
      * @return null|User
      */

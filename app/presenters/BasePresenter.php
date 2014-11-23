@@ -3,11 +3,13 @@
 namespace App\Presenters;
 
 use App\Libs\FormValidators;
+use App\Model\Entities\Task;
 use App\Model\Entities\User;
 use App\Model\Notifications;
 use App\Model\Repositories\ProjectRepository;
 use App\Model\Repositories\TaskRepository;
 use App\Model\Repositories\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Kdyby\Doctrine\EntityManager;
 use Minify_HTML;
 use Nette;
@@ -138,6 +140,76 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
                 $this->redirect('this');
             }
         }
+    }
+
+    /**
+     * Check if user has rights to modify given tasks.
+     *
+     * @param array $ids array of task id's
+     * @return bool|ArrayCollection
+     */
+    private function validateTaskOperation(array $ids)
+    {
+        /** @var ArrayCollection $tasks */
+        $tasks = $this->taskRepository->dao()->findBy(['id' => $ids]);
+
+        /** @var Task $task */
+        foreach ($tasks as $task) {
+            if (!$task->getProject()->getUsers()->contains($this->user())) {
+                return false;
+            }
+        }
+
+        if ($tasks->count() != count($ids)) {
+            return false;
+        } else {
+            return $tasks;
+        }
+    }
+
+    /**
+     * Perform multiple task operations (delete / mark as completed)
+     * TODO rework as form
+     * @param string $operation [delete, complete]
+     * @param array $ids
+     * @throws Nette\Application\BadRequestException
+     */
+    public function handleTaskOperation($operation, $ids)
+    {
+        FormValidators::explode($ids);
+        if ($ids) {
+            $validated = $this->validateTaskOperation($ids);
+            if ($validated instanceof ArrayCollection) {
+                if ($operation == 'delete') {
+                    $this->taskRepository->dao()->delete($validated);
+                    $this->flashMessage('Selected tasks had been deleted', 'info');
+                    $this->redirect('this');
+                } else if ($operation == 'complete') {
+
+                    /** @var Task $task */
+                    foreach($validated as $task) {
+                        $task->setCompleted();
+                        $this->em->persist($task);
+                    }
+
+                    $this->em->flush();
+                } else {
+                    throw new Nette\Application\BadRequestException;
+                }
+            }
+        } else {
+            throw new Nette\Application\BadRequestException;
+        }
+    }
+
+    /**
+     * @param Form $form
+     * @param $values
+     */
+    public function taskOperations(Form $form, $values)
+    {
+        dump($values);
+        die;
     }
 
     /**
