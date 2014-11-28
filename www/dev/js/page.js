@@ -1,15 +1,18 @@
 $(function () {
-    $('#navbar').autoHidingNavbar();
-
     var $body = $('body');
     var $actionBar = $('#actionBar');
     var $navbar = $('#navbar');
+
+    $navbar.autoHidingNavbar();
 
     $('.datepicker').datepicker({
         startDate: '+1d'
     });
 
+    var task_delete = $('#task-operation-delete').attr('href');
+    var task_complete = $('#task-operation-complete').attr('href');
     $body.on('click', '.task-icon', function () {
+        var selected_tasks = "";
         var task = $(this).parent('.task');
         if (task.hasClass('selected')) {
             task.removeClass('selected');
@@ -20,6 +23,14 @@ $(function () {
             $navbar.hide();
             $actionBar.children('.container').fadeIn();
             $actionBar.show();
+
+            $('.task.selected').each(function () {
+                var id = $(this).data('id');
+                selected_tasks += id + ","
+            });
+
+            $('#task-operation-delete').attr('href', task_delete + selected_tasks);
+            $('#task-operation-complete').attr('href', task_complete + selected_tasks);
         } else {
             $actionBar.hide();
             $actionBar.children('.container').hide();
@@ -29,6 +40,8 @@ $(function () {
 
     $body.on('click', '#task-deselect', function (e) {
         e.preventDefault();
+        $('#task-operation-delete').attr('href', task_delete);
+        $('#task-operation-complete').attr('href', task_complete);
         $('.task').removeClass('selected');
         $actionBar.hide();
         $actionBar.children('.container').hide();

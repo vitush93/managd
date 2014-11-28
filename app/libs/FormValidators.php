@@ -2,10 +2,10 @@
 
 namespace App\Libs;
 
-
 use App\Model\Entities\Project;
 use App\Model\Entities\Task;
 use App\Model\Entities\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Kdyby\Doctrine\EntityDao;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Object;
@@ -13,6 +13,8 @@ use Nette\Utils\DateTime;
 
 class FormValidators extends Object
 {
+    public static $ALLOWED_TASK_OPERATIONS = array('delete', 'complete');
+
     /** @var EntityManager */
     private $em;
 
@@ -30,16 +32,24 @@ class FormValidators extends Object
 
     /**
      * Safe parse input separated by comma.
+     * - Explode by comma
+     * - Remove empty values
+     * - Remove duplicates
+     * - Reindex array
+     *
      * @param string $data
+     * @return array
      */
-    public static function explode(&$data)
+    public static function explode($data)
     {
-        $data = trim($data, ' ,');
-        $data = explode(',', $data);
-        array_walk($data, function (&$value, $key) {
+        $arr = trim($data, ' ,');
+        $arr = explode(',', $arr);
+        array_walk($arr, function (&$value, $key) {
             $value = trim($value, ' ,');
         });
-        $data = array_values(array_filter(array_unique($data)));
+        $arr = array_values(array_filter(array_unique($arr)));
+
+        return $arr;
     }
 
     public function __construct(EntityManager $entityManager)
@@ -79,6 +89,57 @@ class FormValidators extends Object
     public function colorValidator($item, $args)
     {
         return in_array($item->value, Task::$COLORS);
+    }
+
+    /**
+     * Check if user has rights to modify given tasks.
+     *
+     * @param array $ids array of task id's
+     * @return bool|ArrayCollection
+     */
+    // TODO
+    public function validateTaskOperation(array $ids)
+    {
+        /** @var ArrayCollection $tasks */
+        $tasks = $this->taskRepository->dao()->findBy(['id' => $ids]);
+
+        /** @var Task $task */
+        foreach ($tasks as $task) {
+            if (!$task->getProject()->getUsers()->contains($this->user())) {
+                return false;
+            }
+        }
+
+        if ($tasks->count() != count($ids)) {
+            return false;
+        } else {
+            return $tasks;
+        }
+    }
+
+    // TODO
+    public function multiTaskValidator($item, $args)
+    {
+        $ids = self::explode($item->value);
+
+        if (!$ids) return false;
+
+        $validated = $this->validateTaskOperation($ids);
+        if ($validated instanceof ArrayCollection) {
+
+        }
+    }
+
+    /**
+     * [TaskOperations]
+     *
+     * @param $item
+     * @param $args
+     * @return bool
+     */
+    public function taskOperationsValidator($item, $args)
+    {
+        return in_array($item->value, self::$ALLOWED_TASK_OPERATIONS);
     }
 
     /**

@@ -3,13 +3,11 @@
 namespace App\Presenters;
 
 use App\Libs\FormValidators;
-use App\Model\Entities\Task;
 use App\Model\Entities\User;
 use App\Model\Notifications;
 use App\Model\Repositories\ProjectRepository;
 use App\Model\Repositories\TaskRepository;
 use App\Model\Repositories\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Kdyby\Doctrine\EntityManager;
 use Minify_HTML;
 use Nette;
@@ -42,6 +40,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     /** @var EntityManager @inject */
     public $em;
 
+    /**
+     * Check user permission to view current page first.
+     */
     protected function startup()
     {
         parent::startup();
@@ -92,11 +93,18 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         return $this->doctrineUser;
     }
 
+    /**
+     * Inject user entity to the template.
+     */
     public function beforeRender()
     {
         $this->template->userInfo = $this->user();
     }
 
+    /**
+     * @param Form $form
+     * @param $values
+     */
     public function loginFormSucceeded(Form $form, $values)
     {
         try {
@@ -107,6 +115,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         }
     }
 
+    /**
+     * @param null $class
+     * @return Nette\Application\UI\ITemplate
+     */
     protected function createTemplate($class = NULL)
     {
         $template = parent::createTemplate($class);
@@ -143,73 +155,30 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     }
 
     /**
-     * Check if user has rights to modify given tasks.
+     * Handle multi task delete.
      *
-     * @param array $ids array of task id's
-     * @return bool|ArrayCollection
+     * @param $ids
      */
-    private function validateTaskOperation(array $ids)
+    public function handleMultiDelete($ids)
     {
-        /** @var ArrayCollection $tasks */
-        $tasks = $this->taskRepository->dao()->findBy(['id' => $ids]);
+        $this->taskRepository->multiDelete($this->user(), FormValidators::explode($ids));
 
-        /** @var Task $task */
-        foreach ($tasks as $task) {
-            if (!$task->getProject()->getUsers()->contains($this->user())) {
-                return false;
-            }
-        }
-
-        if ($tasks->count() != count($ids)) {
-            return false;
-        } else {
-            return $tasks;
-        }
+        $this->flashMessage('Selected tasks have been deleted', 'info');
+        $this->redirect('this');
     }
 
     /**
-     * Perform multiple task operations (delete / mark as completed)
-     * TODO rework as form
-     * @param string $operation [delete, complete]
-     * @param array $ids
-     * @throws Nette\Application\BadRequestException
+     * Handle multi task complete.
+     *
+     * @param $ids
      */
-    public function handleTaskOperation($operation, $ids)
+    public function handleMultiComplete($ids)
     {
-        FormValidators::explode($ids);
-        if ($ids) {
-            $validated = $this->validateTaskOperation($ids);
-            if ($validated instanceof ArrayCollection) {
-                if ($operation == 'delete') {
-                    $this->taskRepository->dao()->delete($validated);
-                    $this->flashMessage('Selected tasks had been deleted', 'info');
-                    $this->redirect('this');
-                } else if ($operation == 'complete') {
+        $this->taskRepository->multiComplete($this->user(), FormValidators::explode($ids));
+        $this->em->flush();
 
-                    /** @var Task $task */
-                    foreach($validated as $task) {
-                        $task->setCompleted();
-                        $this->em->persist($task);
-                    }
-
-                    $this->em->flush();
-                } else {
-                    throw new Nette\Application\BadRequestException;
-                }
-            }
-        } else {
-            throw new Nette\Application\BadRequestException;
-        }
-    }
-
-    /**
-     * @param Form $form
-     * @param $values
-     */
-    public function taskOperations(Form $form, $values)
-    {
-        dump($values);
-        die;
+        $this->flashMessage('Selected tasks have been marked as completed', 'info');
+        $this->redirect('this');
     }
 
     /**
@@ -224,6 +193,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         $this->redirect('this');
     }
 
+    /**
+     * ModalProjectForm factory.
+     *
+     * @return Form
+     */
     protected function createComponentModalProjectForm()
     {
         $form = new Form();
@@ -239,6 +213,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         return $form;
     }
 
+    /**
+     * NavbarLoginForm factory.
+     *
+     * @return Form
+     */
     protected function createComponentNavbarLoginForm()
     {
         $form = new Form();

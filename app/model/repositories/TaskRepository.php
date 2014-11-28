@@ -6,6 +6,7 @@ namespace App\Model\Repositories;
 
 use App\Model\Entities\Task;
 use App\Model\Entities\User;
+use Doctrine\Common\Collections\Criteria;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Object;
 
@@ -29,6 +30,51 @@ class TaskRepository extends Object implements IRepository
     public function dao()
     {
         return $this->taskDao;
+    }
+
+
+    public function multiDelete(User $user, array $ids)
+    {
+        /** @var Task $task */
+        foreach($this->validateMultiOperation($user, $ids) as $task) {
+            $this->taskDao->delete($task);
+        }
+    }
+
+    /**
+     * Check if tasks are assigned to the User.
+     *
+     * @param User $user
+     * @param array $ids
+     * @return array|\Doctrine\Common\Collections\Collection|static
+     */
+    private function validateMultiOperation(User $user, array $ids)
+    {
+        $tasks = $user->getTasks()->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->in('id', $ids))
+        );
+
+        if (count($ids) == count($tasks)) {
+            return $tasks;
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Multi task complete by ids.
+     *
+     * @param User $user
+     * @param array $ids
+     */
+    public function multiComplete(User $user, array $ids)
+    {
+        /** @var Task $task */
+        foreach ($this->validateMultiOperation($user, $ids) as $task) {
+            $task->setCompleted();
+            $this->em->persist($task);
+        }
     }
 
     /**

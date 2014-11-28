@@ -24,8 +24,8 @@
             </a>
 
             <ul class="pull-right">
-               <li><a href=""><i class="fa fa-trash fa-2x"></i></a></li>
-               <li><a href=""><i class="fa fa-check fa-2x"></i></a></li>
+               <li><a href="{link multiDelete!}&ids=" class="task-operation" id="task-operation-delete"><i class="fa fa-trash fa-2x"></i></a></li>
+               <li><a href="{link multiComplete!}&ids=" class="task-operation" id="task-operation-complete"><i class="fa fa-check fa-2x"></i></a></li>
             </ul>
         </div>
     </div>
@@ -156,7 +156,7 @@
                                     <p><a href="{link Project:default $p->id}">{$p->name}</a></p>
                                 </td>
                                 <td>
-                                    {if $p->owner == $userInfo}
+                                    {if $p->isOwner($userInfo)}
                                         <a href="{link deleteProject! $p->id}" onclick="return confirm('Are you sure?')"
                                            class="pull-right"><i class="fa fa-trash fa-2x"></i></a>
                                     {/if}

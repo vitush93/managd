@@ -1,8 +1,11 @@
+{var $upcoming = $userInfo->getUpcomingTasks()}
+{var $uncompleted = $userInfo->getUncompletedTasks()}
 
 {block upcoming_tasks}
-    {foreach $userInfo->getTasks() as $t}
+
+    {foreach $upcoming as $t}
         {continueIf !($t->isUpcoming())}
-        <div class="task">
+        <div class="task" data-id="{$t->id}">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
                                 <span class="task-icon project-icon {$t->project->color}">
@@ -16,13 +19,14 @@
             <a href="{link Task:default $t->id}" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
         </div>
     {/foreach}
+
 {/block}
 
 {block tasks}
 
-    {foreach $userInfo->getTasks() as $t}
+    {foreach $uncompleted as $t}
         {continueIf ($t->isUpcoming())}
-        <div class="task">
+        <div class="task" data-id="{$t->id}">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
                                 <span class="task-icon project-icon {$t->project->color}">
@@ -128,10 +132,13 @@
             <div class="col-sm-8 col-md-9" id="content">
                 <div class="row">
                     <div class="col-xs-12">
-                        {if $userInfo->getTasks()->count() == 0}
+                        {var $hasUpcoming = $userInfo->hasUpcoming()}
+                        {var $hasIncompleted = $userInfo->hasIncompleted()}
+
+                        {if !$hasUpcoming && !$hasIncompleted}
                             <p class="content-notify">Yay, you have no tasks to complete!</p>
                         {else}
-                            {if $userInfo->hasUpcoming()}
+                            {if $hasUpcoming}
                                 <div class="heading">
                                     <h5>Upcoming / Due</h5>
                                 </div>
@@ -139,12 +146,15 @@
                                     {include upcoming_tasks}
                                 </div>
                             {/if}
-                            <div class="heading">
-                                <h5>My Tasks</h5>
-                            </div>
-                            <div class="task-list">
-                                {include tasks}
-                            </div>
+
+                            {if $hasIncompleted}
+                                <div class="heading">
+                                    <h5>My Tasks</h5>
+                                </div>
+                                <div class="task-list">
+                                    {include tasks}
+                                </div>
+                            {/if}
                         {/if}
                     </div>
                 </div>

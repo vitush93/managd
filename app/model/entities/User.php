@@ -243,6 +243,35 @@ class User extends BaseEntity
     }
 
     /**
+     * Get User's upcoming tasks.
+     *
+     * @return \Doctrine\Common\Collections\Collection|static
+     */
+    public function getUpcomingTasks()
+    {
+        $crit = Criteria::create()
+            ->where(Criteria::expr()->lte('due', new \DateTime('+3 days')))
+            ->andWhere(Criteria::expr()->eq('completed', FALSE))
+            ->orderBy(array('due' => 'ASC'));
+
+        return $this->tasks->matching($crit);
+    }
+
+    /**
+     * Get User's uncompleted tasks.
+     *
+     * @return \Doctrine\Common\Collections\Collection|static
+     */
+    public function getUncompletedTasks()
+    {
+        $crit = Criteria::create()
+            ->where(Criteria::expr()->eq('completed', FALSE))
+            ->orderBy(array('due' => 'ASC'));
+
+        return $this->tasks->matching($crit);
+    }
+
+    /**
      * @return \Doctrine\Common\Collections\Collection|static
      */
     public function getUnreadNotifications()
@@ -255,19 +284,19 @@ class User extends BaseEntity
     }
 
     /**
-     * Has this user any upcoming tasks?
-     *
      * @return bool
      */
     public function hasUpcoming()
     {
-        foreach($this->tasks as $t) {
-            if($t->isUpcoming()) {
-                return true;
-            }
-        }
+        return $this->getUpcomingTasks()->count() > 0;
+    }
 
-        return false;
+    /**
+     * @return bool
+     */
+    public function hasIncompleted()
+    {
+        return $this->getUncompletedTasks()->count() > 0;
     }
 
 }

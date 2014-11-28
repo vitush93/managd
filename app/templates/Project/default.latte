@@ -1,9 +1,10 @@
+{var $upcoming = $project->getUpcomingTasks()}
+{var $uncompleted = $project->getUncompletedTasks()}
 
 {block upcoming_tasks}
-    {* {foreach $project->getTasks() as $t}
-        {continueIf !($t->isUpcoming())} *}
-    {foreach $project->getUpcomingTasks() as $t}
-        <div class="task">
+
+    {foreach $upcoming as $t}
+        <div class="task" data-id="{$t->id}">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
                 <img src="{$basePath}/images/avatars/{$t->assignee->avatar}.png" class="img-circle">
@@ -15,14 +16,15 @@
             <a href="{link Task:default $t->id}" class="task-more pull-right"><i class="fa fa-angle-right"></i></a>
         </div>
     {/foreach}
+
 {/block}
 
 {block tasks}
 
-    {foreach $project->getTasks() as $t}
+    {foreach $uncompleted as $t}
         {continueIf ($t->isUpcoming())}
 
-        <div class="task">
+        <div class="task" data-id="{$t->id}">
             <aside class="task-icon">
                 <span class="strip {$t->color}"></span>
                 <img src="{$basePath}/images/avatars/{$t->assignee->avatar}.png" class="img-circle">
@@ -45,7 +47,7 @@
                     <div class="col-xs-12">
                         <div id="projects" class="visible-lg visible-md visible-sm">
 
-                            {if $userInfo == $project->owner}
+                            {if $project->isOwner($userInfo)}
                                 {form projectName}
                                     {input name}
                                     {input send}
@@ -58,12 +60,12 @@
                                 {foreach $project->users as $u}
                                     <p>
                                         <img src="{$basePath}/images/avatars/{$u->avatar}.png" alt="" title="">
-                                        <span>{$u->fullname}{if $project->owner == $u}*{/if}</span>
+                                        <span>{$u->fullname}{if $project->isOwner($u)}*{/if}</span>
                                     </p>
                                 {/foreach}
                             </div>
 
-                            {if $userInfo == $project->owner}
+                            {if $project->isOwner($userInfo)}
 
                                 {snippet inv}
 
@@ -122,10 +124,13 @@
             <div class="col-sm-8 col-md-9" id="content">
                 <div class="row">
                     <div class="col-xs-12">
-                        {if $project->getTasks()->count() == 0}
+                        {var $hasUpcoming = $project->hasUpcoming()}
+                        {var $hasIncompleted = $project->hasIncompleted()}
+
+                        {if !$hasUpcoming && !$hasIncompleted}
                             <p class="content-notify">Yay, there are no tasks in this project!</p>
                         {else}
-                            {if $project->hasUpcoming()}
+                            {if $hasUpcoming}
                                 <div class="heading">
                                     <h5>Upcoming / Due</h5>
                                 </div>
@@ -133,12 +138,15 @@
                                     {include upcoming_tasks}
                                 </div>
                             {/if}
-                            <div class="heading">
-                                <h5>Project Tasks</h5>
-                            </div>
-                            <div class="task-list">
-                                {include tasks}
-                            </div>
+
+                            {if $hasIncompleted}
+                                <div class="heading">
+                                    <h5>Project Tasks</h5>
+                                </div>
+                                <div class="task-list">
+                                    {include tasks}
+                                </div>
+                            {/if}
                         {/if}
                     </div>
                 </div>

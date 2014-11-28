@@ -236,13 +236,15 @@ class Project extends BaseEntity
      */
     public function hasUpcoming()
     {
-        foreach($this->tasks as $t) {
-            if($t->isUpcoming()) {
-                return true;
-            }
-        }
+        return $this->getUpcomingTasks()->count() > 0;
+    }
 
-        return false;
+    /**
+     * @return bool
+     */
+    public function hasIncompleted()
+    {
+        return $this->getUncompletedTasks()->count() > 0;
     }
 
 }
