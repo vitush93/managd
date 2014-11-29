@@ -33,6 +33,12 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        concurrent: {
+            css: ['less', 'concat', 'cssc', 'autoprefixer', 'cssmin'],
+            js: ['uglify'],
+            watch: ['watch']
+        },
+
         cssc: {
             build: {
                 options: {
@@ -100,9 +106,8 @@ module.exports = function (grunt) {
 
     });
 
-    grunt.registerTask('default', ['build', 'watch']);
+    grunt.registerTask('default', ['concurrent:css', 'concurrent:js', 'concurrent:watch']);
     grunt.registerTask('buildcss', ['less', 'concat', 'cssc', 'autoprefixer', 'cssmin']);
     grunt.registerTask('buildjs', ['uglify']);
     grunt.registerTask('build', ['buildcss', 'buildjs']);
-
 };

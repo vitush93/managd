@@ -1,3 +1,113 @@
 {block content}
-    {$task->title}
+
+<div class="container" id="main">
+    <div class="row">
+
+        <div class="col-lg-3 col-md-4 task-sidebar" id="task-menu">
+
+            <input type="text" class="form-control" value="Task title" id="task-name">
+            <span id="last-edited">last edited on 19 March, 19:14 by Bob</span>
+
+            <div id="task-assignees">
+                <p>
+                    <img src="{$basePath}/images/avatars/{$userInfo->avatar}.png" alt="" title="" class="avatar-pick selected" data-avatar="bob">
+                    <span>Bob</span>
+                </p>
+            </div>
+
+        </div>
+
+        <div class="col-lg-5 col-md-8" id="task-detail">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Subsection 1</h3>
+
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
+                        sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                        <li>Aliquam tincidunt mauris eu risus.</li>
+                        <li>Vestibulum auctor dapibus neque.</li>
+                    </ul>
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+
+                    <h3>Subsection 2</h3>
+
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
+                        sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
+                        Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+                        commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros
+                        ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar
+                        facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu
+                        vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan
+                        porttitor, facilisis luctus, metus
+                    </p>
+                </div>
+            </div>
+
+            <!--
+            Data to display:
+            x title
+            x asignee
+            - due date (time left)
+            x content
+            - edit button
+            - delete button
+            - project (as breadcrumb?)
+            x followers (defined by project)
+            x comments
+            - attachments
+            x task last edited by.. (simple changelog)
+            -->
+
+        </div>
+        <div class="col-lg-4 col-md-12">
+            <div class="panel" id="task-comments">
+                <div class="comment row">
+                    <div class=" avatar">
+                        <img src="{$basePath}/images/avatar.png" alt="" title="" class="img-circle">
+                    </div>
+
+                    <div class="content">
+                        <p class="author">Bob Sample <span>2 days ago</span></p>
+
+                        <div class="text">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue ipsum magna, quis
+                            molestie
+                            justo tristique a. Vestibulum iaculis lacus eget quam cursus aliquam.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comment row">
+                    <div class=" avatar">
+                        <img src="{$basePath}/images/avatar.png" alt="" title="" class="img-circle">
+                    </div>
+
+                    <div class="content">
+                        <p class="author">Bob Sample <span>2 days ago</span></p>
+
+                        <div class="text">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue ipsum magna, quis
+                            molestie
+                            justo tristique a. Vestibulum iaculis lacus eget quam cursus aliquam.
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="newcomment">
+                    <form>
+                        <textarea></textarea>
+                        <input type="submit" class="btn btn-success" value="add comment">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {/block}

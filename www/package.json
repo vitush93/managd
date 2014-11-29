@@ -12,6 +12,7 @@
         "grunt-contrib-concat": "*",
         "grunt-autoprefixer": "*",
         "grunt-cssc": "*",
+        "grunt-concurrent": "*",
         "matchdep": "*",
         "time-grunt": "~1.0.0"
     }
