@@ -33,6 +33,12 @@ class TaskRepository extends Object implements IRepository
     }
 
 
+    /**
+     * Delete multiple tasks by id.
+     *
+     * @param User $user
+     * @param array $ids
+     */
     public function multiDelete(User $user, array $ids)
     {
         /** @var Task $task */
